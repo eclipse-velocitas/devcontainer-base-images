@@ -1,0 +1,14 @@
+[
+    {
+        "dependencies": {
+            "python": {
+                "version": "3.10"
+            },
+            "dapr": {
+                "cli": {
+                    "version": "1.7.1"
+                }
+            }
+        }
+    }
+]
