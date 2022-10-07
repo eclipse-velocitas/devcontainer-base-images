@@ -25,6 +25,11 @@ RUN apt-get install -y apt-utils openssh-client gnupg2 dirmngr iproute2 \
         libgssapi-krb5-2 libicu[0-9][0-9] liblttng-ust[0-9] \
         libstdc++6 zlib1g locales sudo ncdu man-db strace gnupg2
 
+ADD https://raw.githubusercontent.com/devcontainers/features/main/src/common-utils/install.sh /tmp/scripts/install-common.sh
+RUN UID="4000" bash /tmp/scripts/install-common.sh 
+ADD https://raw.githubusercontent.com/devcontainers/features/main/src/docker-in-docker/install.sh /tmp/scripts/install-dind.sh
+RUN VERSION="latest" bash /tmp/scripts/install-dind.sh
+
 COPY ./requirements/ /requirements/
 COPY ./scripts/ /scripts/
 
