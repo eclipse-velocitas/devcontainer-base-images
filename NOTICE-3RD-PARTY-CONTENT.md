@@ -84,7 +84,7 @@
 ## Workflows
 | Dependency | Version | License |
 |:-----------|:-------:|--------:|
-|actions/checkout|v2|MIT License|
+|actions/checkout|v3|MIT License|
 |actions/checkout|v3|MIT License|
 |docker/build-push-action|v3|Apache License 2.0|
 |docker/login-action|v2|Apache License 2.0|
