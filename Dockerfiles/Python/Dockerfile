@@ -23,7 +23,8 @@ RUN apt-get install -y apt-utils openssh-client gnupg2 dirmngr iproute2 \
         bzip2 zip nano vim-tiny less jq lsb-release git zsh pigz \
         apt-transport-https dialog libc6 libgcc1 libkrb5-3 iptables \
         libgssapi-krb5-2 libicu[0-9][0-9] liblttng-ust[0-9] \
-        libstdc++6 zlib1g locales sudo ncdu man-db strace gnupg2
+        libstdc++6 zlib1g locales sudo ncdu man-db strace gnupg2 \
+        build-essential python3-dev
 
 ADD https://raw.githubusercontent.com/devcontainers/features/main/src/common-utils/install.sh /tmp/scripts/install-common.sh
 RUN UID="4000" bash /tmp/scripts/install-common.sh 
