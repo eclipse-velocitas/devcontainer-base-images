@@ -14,10 +14,8 @@
 
 FROM ubuntu:22.04
 
-RUN apt-get update && apt-get upgrade -y 
-
-# install devcontainer feature prerequisites
-RUN apt-get install -y apt-utils openssh-client gnupg2 dirmngr iproute2 \
+RUN apt-get update && apt-get upgrade -y && \
+        apt-get install -y apt-utils openssh-client gnupg2 dirmngr iproute2 \
         procps lsof htop net-tools psmisc manpages manpages-dev \
         curl tree wget rsync ca-certificates unzip init-system-helpers \
         bzip2 zip nano vim-tiny less jq lsb-release git zsh pigz \
@@ -30,8 +28,7 @@ ADD https://raw.githubusercontent.com/devcontainers/features/main/src/common-uti
 RUN UID="4000" bash /tmp/scripts/install-common.sh 
 ADD https://raw.githubusercontent.com/devcontainers/features/main/src/docker-in-docker/install.sh /tmp/scripts/install-dind.sh
 RUN VERSION="latest" bash /tmp/scripts/install-dind.sh
-
-COPY ./scripts/ /scripts/
+COPY ./common/ /scripts/
 
 WORKDIR /scripts
 RUN ./install-python.sh
