@@ -40,7 +40,6 @@ RUN ./install-dapr-cli.sh
 RUN ./install-k3d-prerequisites.sh
 USER 4000
 RUN ./install-k3d-tooling.sh
-USER root
 
 WORKDIR /requirements
 
@@ -48,3 +47,5 @@ RUN pip3 install -r requirements-dev.txt
 RUN pip3 install -r requirements-links.txt
 RUN pip3 install -r requirements.txt
 RUN pip3 install -r requirements-test.txt
+
+USER root
