@@ -42,10 +42,10 @@ USER 4000
 RUN ./install-k3d-tooling.sh
 
 WORKDIR /requirements
-
+# Always install requirements under vscode user to avoid issue with installation of packages
 RUN pip3 install -r requirements-dev.txt
 RUN pip3 install -r requirements-links.txt
 RUN pip3 install -r requirements.txt
 RUN pip3 install -r requirements-test.txt
-
+# Keep root as last user
 USER root
