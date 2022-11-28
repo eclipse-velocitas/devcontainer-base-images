@@ -47,10 +47,10 @@
 |platformdirs|2.5.4|MIT|
 |pluggy|1.0.0|MIT|
 |pre-commit|2.20.0|MIT|
-|protobuf|3.20.1|Google License|
+|protobuf|3.20.3|Google License|
 |py|1.11.0|MIT|
-|pycodestyle|2.9.1|MIT|
-|pyflakes|2.5.0|MIT|
+|pycodestyle|2.10.0|MIT|
+|pyflakes|3.0.1|MIT|
 |Pygments|2.13.0|BSD|
 |pygount|1.2.4|BSD|
 |pyparsing|3.0.9|MIT|
@@ -68,7 +68,7 @@
 |tomli|2.0.1|MIT|
 |tox|3.27.1|MIT|
 |types-mock|4.0.15.2|Apache 2.0|
-|types-protobuf|3.20.4.5|Apache 2.0|
+|types-protobuf|4.21.0.0|Apache 2.0|
 |typing-extensions|4.4.0|Python Software Foundation License|
 |virtualenv|20.16.7|MIT|
 |wheel|0.38.4|MIT|
