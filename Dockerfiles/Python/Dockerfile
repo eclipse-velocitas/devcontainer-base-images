@@ -51,6 +51,6 @@ WORKDIR /requirements
 RUN pip3 install -r requirements-dev.txt
 RUN pip3 install -r requirements-links.txt
 RUN pip3 install -r requirements-app.txt
-RUN pip3 install -r requirements-test.txt
+RUN pip3 install -r requirements-tests.txt
 # Keep root as last user
 USER root
