@@ -31,7 +31,6 @@ RUN UID="4000" bash /tmp/scripts/install-common.sh
 ADD https://raw.githubusercontent.com/devcontainers/features/main/src/docker-in-docker/install.sh /tmp/scripts/install-dind.sh
 RUN VERSION="latest" bash /tmp/scripts/install-dind.sh
 
-COPY ./requirements/ /requirements/
 COPY ./scripts/ /scripts/
 
 WORKDIR /scripts
@@ -41,11 +40,17 @@ RUN ./install-k3d-prerequisites.sh
 USER 4000
 RUN ./install-k3d-tooling.sh
 
+# Fetch requirements into requirements folder
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/7ca8b06e3032863bb3f5be0874a3eacf6b382ae7/requirements-dev.txt /requirements/
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/7ca8b06e3032863bb3f5be0874a3eacf6b382ae7/app/requirements-links.txt /requirements/
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/7ca8b06e3032863bb3f5be0874a3eacf6b382ae7/app/requirements-app.txt /requirements/
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/7ca8b06e3032863bb3f5be0874a3eacf6b382ae7/app/tests/requirements-tests.txt /requirements/
+
 WORKDIR /requirements
 # Always install requirements under vscode user to avoid issue with installation of packages
 RUN pip3 install -r requirements-dev.txt
 RUN pip3 install -r requirements-links.txt
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements-app.txt
 RUN pip3 install -r requirements-test.txt
 # Keep root as last user
 USER root
