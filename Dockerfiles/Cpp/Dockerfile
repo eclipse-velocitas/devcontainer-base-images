@@ -32,7 +32,7 @@ RUN apt-get update && apt-get upgrade -y && \
         apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 
-ADD https://raw.githubusercontent.com/devcontainers/features/main/src/common-utils/install.sh /container/scripts/install-common.sh
+ADD https://raw.githubusercontent.com/devcontainers/features/7fa90110d762797cc0b1c2fe8fcc028c9b813d56/src/common-utils/install.sh /container/scripts/install-common.sh
 RUN UID="4000" bash /container/scripts/install-common.sh 
 
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/conanfile.py /container/cpp/
@@ -84,9 +84,9 @@ RUN apt-get --fix-missing update && apt-get upgrade -y && \
         update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-14 100 && \
         update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-14 100
 
-ADD https://raw.githubusercontent.com/devcontainers/features/main/src/common-utils/install.sh /container/scripts/install-common.sh
+ADD https://raw.githubusercontent.com/devcontainers/features/7fa90110d762797cc0b1c2fe8fcc028c9b813d56/src/common-utils/install.sh /container/scripts/install-common.sh
 RUN UID="4000" bash /container/scripts/install-common.sh 
-ADD https://raw.githubusercontent.com/devcontainers/features/main/src/docker-in-docker/install.sh /container/scripts/install-dind.sh
+ADD https://raw.githubusercontent.com/devcontainers/features/7fa90110d762797cc0b1c2fe8fcc028c9b813d56/src/docker-in-docker/install.sh /container/scripts/install-dind.sh
 RUN VERSION="latest" bash /container/scripts/install-dind.sh
 
 COPY ./common/ /scripts/
