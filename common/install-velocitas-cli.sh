@@ -14,17 +14,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 echo "#######################################################"
-echo "### Install dapr-cli                                ###"
+echo "### Install Velocitas CLI                           ###"
 echo "#######################################################"
 
-DEFAULT_DAPR_CLI_VERSION=$(cat AppManifest.json | jq .[].dependencies.dapr.cli.version | tr -d '"')
+CLI_ASSET_NAME=velocitas-linux-$(echo $1 | sed 's/amd64/x64/g')
+CLI_INSTALL_PATH=/usr/bin/velocitas
 
-INSTALLED_DAPR_CLI_VERSION=$(dapr --version | grep "CLI version: " | sed 's/^.*: //' | sed 's/\s*//g')
+CLI_DOWNLOAD_URL="https://github.com/eclipse-velocitas/cli/releases/latest/download/${CLI_ASSET_NAME}"
 
-# Check dapr CLI
-if [ "${INSTALLED_DAPR_CLI_VERSION}" != "${DEFAULT_DAPR_CLI_VERSION}" ]; then
-      echo "Install dapr CLI $DEFAULT_DAPR_CLI_VERSION"
-      wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash -s $DEFAULT_DAPR_CLI_VERSION
-else
-      echo "Dapr CLI $DEFAULT_DAPR_CLI_VERSION is already installed."
-fi
+curl -L ${CLI_DOWNLOAD_URL} -o "${CLI_INSTALL_PATH}"
+chmod +x "${CLI_INSTALL_PATH}"
+
+CLI_VERSION=$( "${CLI_INSTALL_PATH}" --version )
+
+echo "CLI version: ${CLI_VERSION}" 
