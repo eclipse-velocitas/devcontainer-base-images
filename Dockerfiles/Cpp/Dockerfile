@@ -96,11 +96,11 @@ ARG TARGETARCH
 WORKDIR /scripts
 RUN ./install-python.sh && \
     ./install-dapr-cli.sh && \
-    ./install-k3d-prerequisites.sh \
-    ./install-k3d-tooling.sh \
+    ./install-k3d-prerequisites.sh && \
     ./install-velocitas-cli.sh ${TARGETARCH}
-
 USER 4000
+RUN ./install-k3d-tooling.sh
+
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt  /container/requirements.txt
 # Install Python requirements as vscode user and clean up
 RUN pip3 install -r /container/requirements.txt && sudo rm /container/requirements.txt
