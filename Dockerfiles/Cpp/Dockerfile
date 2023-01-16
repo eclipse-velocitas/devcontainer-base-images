@@ -84,10 +84,6 @@ RUN apt-get --fix-missing update && apt-get upgrade -y && \
         update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-14 100 && \
         update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-14 100
 
-# Install CLI
-ARG TARGETARCH
-COPY ./bin/velocitas-cli-$TARGETARCH /usr/bin/velocitas
-
 # Install devcontainer features
 ADD https://raw.githubusercontent.com/devcontainers/features/7fa90110d762797cc0b1c2fe8fcc028c9b813d56/src/common-utils/install.sh /container/scripts/install-common.sh
 RUN UID="4000" bash /container/scripts/install-common.sh 
@@ -96,13 +92,15 @@ RUN VERSION="latest" bash /container/scripts/install-dind.sh
 
 COPY ./common/ /scripts/
 
+ARG TARGETARCH
 WORKDIR /scripts
 RUN ./install-python.sh && \
     ./install-dapr-cli.sh && \
-    ./install-k3d-prerequisites.sh \
-    ./install-k3d-tooling.sh
-
+    ./install-k3d-prerequisites.sh && \
+    ./install-velocitas-cli.sh ${TARGETARCH}
 USER 4000
+RUN ./install-k3d-tooling.sh
+
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt  /container/requirements.txt
 # Install Python requirements as vscode user and clean up
 RUN pip3 install -r /container/requirements.txt && sudo rm /container/requirements.txt
