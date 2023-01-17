@@ -25,10 +25,9 @@ RUN apt-get update && apt-get upgrade -y && \
         build-essential python3-dev
 
 # Install devcontainer features
-ADD https://raw.githubusercontent.com/devcontainers/features/7fa90110d762797cc0b1c2fe8fcc028c9b813d56/src/common-utils/install.sh /tmp/scripts/install-common.sh
-RUN UID="4000" bash /tmp/scripts/install-common.sh 
-ADD https://raw.githubusercontent.com/devcontainers/features/7fa90110d762797cc0b1c2fe8fcc028c9b813d56/src/docker-in-docker/install.sh /tmp/scripts/install-dind.sh
-RUN VERSION="latest" bash /tmp/scripts/install-dind.sh
+ADD https://github.com/devcontainers/features/tree/main/src /tmp/scripts
+RUN UID="4000" bash /tmp/scripts/common-utils/install.sh 
+RUN VERSION="latest" bash /tmp/scripts/docker-in-docker/install.sh
 
 COPY ./common/ /scripts/
 
