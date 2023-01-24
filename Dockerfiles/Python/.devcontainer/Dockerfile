@@ -24,12 +24,13 @@ RUN apt-get update && apt-get upgrade -y && \
         libstdc++6 zlib1g locales sudo ncdu man-db strace gnupg2 \
         build-essential python3-dev
 
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/AppManifest.json /scripts/
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-dapr-cli.sh /scripts/
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-k3d-prerequisites.sh /scripts/
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-k3d-tooling.sh /scripts/
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-python.sh /scripts/
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-velocitas-cli.sh /scripts/
+# Fetch common scripts into scripts folder
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/AppManifest.json /scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-dapr-cli.sh /scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-k3d-prerequisites.sh /scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-k3d-tooling.sh /scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-python.sh /scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-velocitas-cli.sh /scripts/
 
 ARG TARGETARCH
 WORKDIR /scripts
@@ -37,14 +38,13 @@ RUN ./install-python.sh && \
     ./install-dapr-cli.sh && \
     ./install-k3d-prerequisites.sh && \
     ./install-velocitas-cli.sh ${TARGETARCH}
-USER 4000
 RUN ./install-k3d-tooling.sh
 
 # Fetch requirements into requirements folder
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/requirements-dev.txt /requirements/
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-links.txt /requirements/
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-app.txt /requirements/
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/tests/requirements-tests.txt /requirements/
+ADD https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/requirements-dev.txt /requirements/
+ADD https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-links.txt /requirements/
+ADD https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-app.txt /requirements/
+ADD https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/tests/requirements-tests.txt /requirements/
 
 WORKDIR /requirements
 # Always install requirements under vscode user to avoid issue with installation of packages
@@ -52,6 +52,5 @@ RUN pip3 install -r requirements-dev.txt
 RUN pip3 install -r requirements-links.txt
 RUN pip3 install -r requirements-app.txt
 RUN pip3 install -r requirements-tests.txt
-# Keep root as last user
-USER root
+
 WORKDIR /
