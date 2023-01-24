@@ -72,11 +72,9 @@ jobs:
 
       - name: "Build image"
         id: image_build
-        uses: docker/build-push-action@v3
+        uses: devcontainers/ci@v0.2
         with:
-          push: true
-          context: "."
-          file: ./Dockerfiles/${{ matrix.language }}/Dockerfile
-          platforms: linux/amd64, linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          imageName: ghcr.io/${{ github.repository }}/${{ matrix.language }}
+          push: never
+          platform: linux/amd64, linux/arm64
+          subFolder: ./Dockerfiles/${{ matrix.language }}/

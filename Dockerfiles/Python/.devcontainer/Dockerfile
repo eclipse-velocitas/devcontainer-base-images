@@ -24,11 +24,6 @@ RUN apt-get update && apt-get upgrade -y && \
         libstdc++6 zlib1g locales sudo ncdu man-db strace gnupg2 \
         build-essential python3-dev
 
-# Install devcontainer features
-ADD https://github.com/devcontainers/features/tree/main/src /tmp/scripts
-RUN UID="4000" bash /tmp/scripts/common-utils/install.sh 
-RUN VERSION="latest" bash /tmp/scripts/docker-in-docker/install.sh
-
 COPY ./common/ /scripts/
 
 ARG TARGETARCH
