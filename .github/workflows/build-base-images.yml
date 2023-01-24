@@ -76,5 +76,5 @@ jobs:
         with:
           imageName: ghcr.io/${{ github.repository }}/${{ matrix.language }}
           push: never
-          platform: linux/amd64, linux/arm64
+          platform: amd64, arm64
           subFolder: ./Dockerfiles/${{ matrix.language }}/
