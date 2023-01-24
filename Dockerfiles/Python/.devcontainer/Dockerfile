@@ -26,7 +26,7 @@ RUN apt-get update && apt-get upgrade -y && \
 
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/AppManifest.json /scripts/
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-dapr-cli.sh /scripts/
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-k3d-preresquites.sh /scripts/
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-k3d-prerequisites.sh /scripts/
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-k3-tooling.sh /scripts/
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-python.sh /scripts/
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-velocitas-cli.sh /scripts/
