@@ -33,7 +33,7 @@ jobs:
   build-image:
     strategy:
       matrix:
-        language: [Python]
+        language: [python]
 
     name: "Building image"
     runs-on: ubuntu-latest
