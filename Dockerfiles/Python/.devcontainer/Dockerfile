@@ -24,7 +24,7 @@ RUN apt-get update && apt-get upgrade -y && \
         libstdc++6 zlib1g locales sudo ncdu man-db strace gnupg2 \
         build-essential python3-dev
 
-COPY ./common/ /scripts/
+COPY ../../../common/ /scripts/
 
 ARG TARGETARCH
 WORKDIR /scripts
