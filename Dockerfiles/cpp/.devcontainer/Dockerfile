@@ -31,20 +31,22 @@ RUN apt-get update && apt-get upgrade -y && \
         gcc-x86-64-linux-gnu g++-x86-64-linux-gnu binutils-x86-64-linux-gnu && \
         apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-
-ADD https://raw.githubusercontent.com/devcontainers/features/7fa90110d762797cc0b1c2fe8fcc028c9b813d56/src/common-utils/install.sh /container/scripts/install-common.sh
-RUN UID="4000" bash /container/scripts/install-common.sh 
-
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/conanfile.py /container/cpp/
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/conanfile.py /container/cpp/
 
 # Get all profiles from the SDK
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/.conan/profiles/linux_aarch64_release /container/cpp/.conan/profiles/
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/.conan/profiles/linux_x86_64_release  /container/cpp/.conan/profiles/
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/.scripts/common.sh                    /container/cpp/.scripts/
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/install_dependencies.sh               /container/cpp/
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt                      /container/cpp/   
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/.conan/profiles/linux_aarch64_release /container/cpp/.conan/profiles/
+ADD --chmod=400 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/.conan/profiles/linux_x86_64_release  /container/cpp/.conan/profiles/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/.scripts/common.sh                    /container/cpp/.scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/install_dependencies.sh               /container/cpp/
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt                      /container/cpp/   
 
-COPY ./common/ /scripts/
+# Fetch common scripts into scripts folder
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/AppManifest.json /scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-dapr-cli.sh /scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-k3d-prerequisites.sh /scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-k3d-tooling.sh /scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-python.sh /scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-velocitas-cli.sh /scripts/
 
 # Install conan
 WORKDIR /scripts
@@ -52,7 +54,6 @@ RUN ./install-python.sh && pip3 install -r /container/cpp/requirements.txt
 
 # Build dependencies for target architecture 
 WORKDIR /container/cpp
-USER 4000
 WORKDIR /container/cpp/build
 WORKDIR /container/cpp
 ARG TARGETARCH
@@ -84,13 +85,13 @@ RUN apt-get --fix-missing update && apt-get upgrade -y && \
         update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-14 100 && \
         update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-14 100
 
-# Install devcontainer features
-ADD https://raw.githubusercontent.com/devcontainers/features/7fa90110d762797cc0b1c2fe8fcc028c9b813d56/src/common-utils/install.sh /container/scripts/install-common.sh
-RUN UID="4000" bash /container/scripts/install-common.sh 
-ADD https://raw.githubusercontent.com/devcontainers/features/7fa90110d762797cc0b1c2fe8fcc028c9b813d56/src/docker-in-docker/install.sh /container/scripts/install-dind.sh
-RUN VERSION="latest" bash /container/scripts/install-dind.sh
-
-COPY ./common/ /scripts/
+# Fetch common scripts into scripts folder
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/AppManifest.json /scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-dapr-cli.sh /scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-k3d-prerequisites.sh /scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-k3d-tooling.sh /scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-python.sh /scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-velocitas-cli.sh /scripts/
 
 ARG TARGETARCH
 WORKDIR /scripts
@@ -98,10 +99,10 @@ RUN ./install-python.sh && \
     ./install-dapr-cli.sh && \
     ./install-k3d-prerequisites.sh && \
     ./install-velocitas-cli.sh ${TARGETARCH}
-USER 4000
+USER user
 RUN ./install-k3d-tooling.sh
 
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt  /container/requirements.txt
+ADD https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt  /container/requirements.txt
 # Install Python requirements as vscode user and clean up
 RUN pip3 install -r /container/requirements.txt && sudo rm /container/requirements.txt
 

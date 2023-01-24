@@ -33,8 +33,8 @@ jobs:
   build-image:
     strategy:
       matrix:
-        language: [python, cpp]
-        
+        language: [python] 
+         
     name: "Building image"
     runs-on: ubuntu-latest
 
@@ -75,6 +75,7 @@ jobs:
         uses: devcontainers/ci@v0.2
         with:
           imageName: ghcr.io/eclipse-velocitas/devcontainer-base-images/${{ matrix.language }}
-          push: never
+          push: always
+          imageTag: test
           platform: linux/amd64,linux/arm64
           subFolder: ./Dockerfiles/${{ matrix.language }}/
