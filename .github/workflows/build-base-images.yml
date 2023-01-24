@@ -74,7 +74,7 @@ jobs:
         id: image_build
         uses: devcontainers/ci@v0.2
         with:
-          imageName: ghcr.io/${{ github.repository }}/${{ matrix.language }}
+          imageName: ghcr.io/eclipse-velocitas/devcontainer-base-images/python
           push: never
           platform: linux/amd64,linux/arm64
           subFolder: ./Dockerfiles/${{ matrix.language }}/
