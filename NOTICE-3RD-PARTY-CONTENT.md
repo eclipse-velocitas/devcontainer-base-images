@@ -6,6 +6,4 @@
 |actions/checkout|v3|MIT License|
 |devcontainers/ci|v0.2|MIT License|
 |docker/login-action|v2|Apache License 2.0|
-|docker/metadata-action|v4|Apache License 2.0|
 |docker/setup-buildx-action|v2|Apache License 2.0|
-|docker/setup-qemu-action|v2|Apache License 2.0|
