@@ -42,6 +42,9 @@ ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-
 
 COPY ./common /scripts
 
+WORKDIR /conan
+ENV CONAN_HOME /conan
+
 # Install conan
 WORKDIR /scripts
 RUN ./install-python.sh && pip3 install -r /container/cpp/requirements.txt
@@ -110,4 +113,4 @@ RUN pip3 install -r /container/requirements.txt && sudo rm /container/requiremen
 USER root
 
 # Obtain pre-build dependencies
-COPY --from=builder /home/vscode/.conan /home/vscode/.conan
+COPY --from=builder /conan /home/vscode/.conan
