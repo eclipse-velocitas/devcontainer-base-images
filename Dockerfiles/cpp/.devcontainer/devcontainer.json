@@ -1,7 +1,8 @@
 {
 	"name": "Base Container",
 	"build": {
-		"dockerfile": "Dockerfile"
+		"dockerfile": "Dockerfile",
+        "context": "../../.."
 	},
     "features": {
         "ghcr.io/devcontainers/features/common-utils:2": {},

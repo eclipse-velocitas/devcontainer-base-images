@@ -40,13 +40,7 @@ ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-
 ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/install_dependencies.sh               /container/cpp/
 ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt                      /container/cpp/   
 
-# Fetch common scripts into scripts folder
-ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/AppManifest.json /scripts/
-ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-dapr-cli.sh /scripts/
-ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-k3d-prerequisites.sh /scripts/
-ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-k3d-tooling.sh /scripts/
-ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-python.sh /scripts/
-ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/devcontainer-base-images/main/common/install-velocitas-cli.sh /scripts/
+COPY ./common /scripts
 
 # Install conan
 WORKDIR /scripts

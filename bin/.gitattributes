@@ -1,2 +1,0 @@
-velocitas-cli-amd64 filter=lfs diff=lfs merge=lfs -text
-velocitas-cli-arm64 filter=lfs diff=lfs merge=lfs -text
