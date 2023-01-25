@@ -79,6 +79,18 @@ RUN apt-get --fix-missing update && apt-get upgrade -y && \
         update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-14 100 && \
         update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-14 100
 
+# Create non-root user
+ARG USERNAME=basecontainer
+ARG USER_UID=4000
+ARG USER_GID=$USER_UID
+
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    && apt-get update \
+    && apt-get install -y sudo \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+
 COPY ./common /scripts
 
 ARG TARGETARCH
@@ -87,10 +99,10 @@ RUN ./install-python.sh && \
     ./install-dapr-cli.sh && \
     ./install-k3d-prerequisites.sh && \
     ./install-velocitas-cli.sh ${TARGETARCH}
-USER user
+USER 4000
 RUN ./install-k3d-tooling.sh
 
-ADD https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt  /container/requirements.txt
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt  /container/requirements.txt
 # Install Python requirements as vscode user and clean up
 RUN pip3 install -r /container/requirements.txt && sudo rm /container/requirements.txt
 

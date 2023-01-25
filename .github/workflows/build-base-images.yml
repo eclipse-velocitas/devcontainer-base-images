@@ -33,7 +33,7 @@ jobs:
   build-image:
     strategy:
       matrix:
-        language: [python] 
+        language: [python, cpp] 
          
     name: "Building image"
     runs-on: ubuntu-latest
@@ -43,9 +43,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           lfs: true
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -57,25 +54,12 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: |
-            ghcr.io/${{ github.repository }}/${{ matrix.language }}
-          tags: |
-            type=sha
-            type=ref,event=tag
-            type=semver,pattern={{version}}
-            type=edge
-            type=raw,value=latest,enable={{is_default_branch}}
-
-      - name: "Build image"
+      - name: Build image
         id: image_build
         uses: devcontainers/ci@v0.2
         with:
-          imageName: ghcr.io/eclipse-velocitas/devcontainer-base-images/${{ matrix.language }}
-          push: always
+          imageName: ghcr.io/${{ github.repository }}/${{ matrix.language }}
           imageTag: test
+          push: always
           platform: linux/amd64,linux/arm64
           subFolder: ./Dockerfiles/${{ matrix.language }}/
