@@ -22,7 +22,7 @@ RUN apt-get update && apt-get upgrade -y && \
         apt-get install -y apt-utils openssh-client gnupg2 dirmngr iproute2 \
         procps lsof htop net-tools psmisc manpages manpages-dev \
         curl wget ca-certificates unzip init-system-helpers \
-        bzip2 zip git zsh pigz \
+        bzip2 zip git zsh pigz jq \
         apt-transport-https dialog libkrb5-3 \
         libgssapi-krb5-2 libicu[0-9][0-9] liblttng-ust[0-9] \
         locales sudo ncdu cmake \
