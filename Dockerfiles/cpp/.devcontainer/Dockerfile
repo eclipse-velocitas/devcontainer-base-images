@@ -35,7 +35,7 @@ ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-
 
 # Get all profiles from the SDK
 ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/.conan/profiles/linux_aarch64_release /container/cpp/.conan/profiles/
-ADD --chmod=400 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/.conan/profiles/linux_x86_64_release  /container/cpp/.conan/profiles/
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/.conan/profiles/linux_x86_64_release  /container/cpp/.conan/profiles/
 ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/.scripts/common.sh                    /container/cpp/.scripts/
 ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/install_dependencies.sh               /container/cpp/
 ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt                      /container/cpp/   
@@ -105,7 +105,7 @@ RUN ./install-python.sh && \
 USER 4000
 RUN ./install-k3d-tooling.sh
 
-ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt  /container/requirements.txt
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt  /container/requirements.txt
 # Install Python requirements as vscode user and clean up
 RUN pip3 install -r /container/requirements.txt && sudo rm /container/requirements.txt
 
