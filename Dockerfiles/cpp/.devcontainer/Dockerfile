@@ -84,7 +84,7 @@ RUN apt-get --fix-missing update && apt-get upgrade -y && \
 
 # Create non-root user
 ARG USERNAME=basecontainer
-ARG USER_UID=4000
+ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
 RUN groupadd --gid $USER_GID $USERNAME \
@@ -102,10 +102,10 @@ RUN ./install-python.sh && \
     ./install-dapr-cli.sh && \
     ./install-k3d-prerequisites.sh && \
     ./install-velocitas-cli.sh ${TARGETARCH}
-USER 4000
+USER 1000
 RUN ./install-k3d-tooling.sh
 
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt  /container/requirements.txt
+ADD --chown=1000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt  /container/requirements.txt
 # Install Python requirements as vscode user and clean up
 RUN pip3 install -r /container/requirements.txt
 
