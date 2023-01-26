@@ -71,7 +71,7 @@ jobs:
         uses: devcontainers/ci@v0.2
         with:
           imageName: ghcr.io/${{ github.repository }}/${{ matrix.language }}
-          imageTag: ${{ steps.get-tag.outputs.tag }
+          imageTag: ${{ steps.get-tag.outputs.tag }}
           push: always
           platform: linux/amd64,linux/arm64
           subFolder: ./Dockerfiles/${{ matrix.language }}/
