@@ -53,7 +53,7 @@ jobs:
         id: get-tag
         shell: bash
         run: |
-          TAG=${{ github.sha }}
+          TAG=${{ github.event.pull_request.head.sha }}
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             TAG=latest
           fi
