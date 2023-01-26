@@ -25,8 +25,8 @@ RUN apt-get update && apt-get upgrade -y && \
         build-essential python3-dev
 
 # Create non-root user
-ARG USERNAME=basecontainer
-ARG USER_UID=1000
+ARG USERNAME=vscode
+ARG USER_UID=4000
 ARG USER_GID=$USER_UID
 
 RUN groupadd --gid $USER_GID $USERNAME \
@@ -44,14 +44,14 @@ RUN ./install-python.sh && \
     ./install-dapr-cli.sh && \
     ./install-k3d-prerequisites.sh && \
     ./install-velocitas-cli.sh ${TARGETARCH}
-USER 1000
+USER 4000
 RUN ./install-k3d-tooling.sh
 
 # Fetch requirements into requirements folder
-ADD --chown=1000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/requirements-dev.txt /requirements/
-ADD --chown=1000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-links.txt /requirements/
-ADD --chown=1000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-app.txt /requirements/
-ADD --chown=1000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/tests/requirements-tests.txt /requirements/
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/requirements-dev.txt /requirements/
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-links.txt /requirements/
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-app.txt /requirements/
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/tests/requirements-tests.txt /requirements/
 
 WORKDIR /requirements
 # Always install requirements under vscode user to avoid issue with installation of packages
