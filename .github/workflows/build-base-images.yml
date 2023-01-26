@@ -60,6 +60,6 @@ jobs:
         with:
           imageName: ghcr.io/${{ github.repository }}/${{ matrix.language }}
           imageTag: test
-          push: never
+          push: always
           platform: linux/amd64,linux/arm64
           subFolder: ./Dockerfiles/${{ matrix.language }}/
