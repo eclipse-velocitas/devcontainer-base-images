@@ -38,7 +38,7 @@ ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-
 ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/.conan/profiles/linux_x86_64_release  /container/cpp/.conan/profiles/
 ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/.scripts/common.sh                    /container/cpp/.scripts/
 ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/install_dependencies.sh               /container/cpp/
-ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt                      /container/cpp/   
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt                      /container/cpp/
 
 COPY ./common /scripts
 
@@ -49,7 +49,7 @@ ENV CONAN_USER_HOME /conan
 WORKDIR /scripts
 RUN ./install-python.sh && pip3 install -r /container/cpp/requirements.txt
 
-# Build dependencies for target architecture 
+# Build dependencies for target architecture
 WORKDIR /container/cpp/build
 WORKDIR /container/cpp
 ARG TARGETARCH
