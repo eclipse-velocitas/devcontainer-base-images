@@ -50,7 +50,6 @@ WORKDIR /scripts
 RUN ./install-python.sh && pip3 install -r /container/cpp/requirements.txt
 
 # Build dependencies for target architecture 
-WORKDIR /container/cpp
 WORKDIR /container/cpp/build
 WORKDIR /container/cpp
 ARG TARGETARCH
@@ -113,4 +112,4 @@ RUN pip3 install -r /container/requirements.txt
 USER root
 
 # Obtain pre-build dependencies
-COPY --chown=4000 --from=builder /conan /home/vscode/.conan
+COPY --chown=4000 --from=builder /conan/.conan /home/vscode/.conan
