@@ -24,13 +24,19 @@ RUN apt-get update && apt-get upgrade -y && \
         libstdc++6 zlib1g locales sudo ncdu man-db strace gnupg2 \
         build-essential python3-dev
 
-# Install devcontainer features
-ADD https://raw.githubusercontent.com/devcontainers/features/7fa90110d762797cc0b1c2fe8fcc028c9b813d56/src/common-utils/install.sh /tmp/scripts/install-common.sh
-RUN UID="4000" bash /tmp/scripts/install-common.sh 
-ADD https://raw.githubusercontent.com/devcontainers/features/7fa90110d762797cc0b1c2fe8fcc028c9b813d56/src/docker-in-docker/install.sh /tmp/scripts/install-dind.sh
-RUN VERSION="latest" bash /tmp/scripts/install-dind.sh
+# Create non-root user
+ARG USERNAME=vscode
+ARG USER_UID=4000
+ARG USER_GID=$USER_UID
 
-COPY ./common/ /scripts/
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    && apt-get update \
+    && apt-get install -y sudo \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+
+COPY ./common /scripts
 
 ARG TARGETARCH
 WORKDIR /scripts

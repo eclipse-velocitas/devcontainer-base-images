@@ -27,4 +27,4 @@ chmod +x "${CLI_INSTALL_PATH}"
 
 CLI_VERSION=$( "${CLI_INSTALL_PATH}" --version )
 
-echo "Installed CLI version: ${CLI_VERSION}" 
+echo "Installed CLI version: ${CLI_VERSION}"
