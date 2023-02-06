@@ -16,7 +16,7 @@
 # Builder step (cross compile from BUILD to HOST, if needed)
 ##############################################################################
 
-FROM --platform=$BUILDPLATFORM ubuntu:22.04 as builder
+FROM --platform=$BUILDPLATFORM osadl/ubuntu-docker-base-image:jammy-amd64-latest as builder
 
 RUN apt-get update && apt-get upgrade -y && \
         apt-get install -y apt-utils openssh-client gnupg2 dirmngr iproute2 \
@@ -63,7 +63,7 @@ RUN conan remove --builds --src --force '*'
 # Final step (run on TARGET, QEMU if needed)
 ##############################################################################
 
-FROM --platform=$TARGETPLATFORM ubuntu:22.04 as final
+FROM --platform=$TARGETPLATFORM osadl/ubuntu-docker-base-image:jammy-amd64-latest as final
 
 RUN apt-get --fix-missing update && apt-get upgrade -y && \
         apt-get install -y apt-utils openssh-client gnupg2 dirmngr iproute2 \

@@ -12,7 +12,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-FROM ubuntu:22.04
+FROM osadl/ubuntu-docker-base-image:jammy-amd64-latest
 
 RUN apt-get update && apt-get upgrade -y && \
         apt-get install -y apt-utils openssh-client gnupg2 dirmngr iproute2 \
