@@ -36,7 +36,9 @@ jobs:
         language: [python, cpp]
 
     name: "Building image"
-    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.get-tag.outputs.tag }}
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout repository
@@ -76,3 +78,35 @@ jobs:
           push: always
           platform: linux/amd64,linux/arm64
           subFolder: ./Dockerfiles/${{ matrix.language }}/
+
+  generate-sbom:
+    name: Generate SBOM
+    runs-on: ubuntu-22.04
+    needs: [build-image]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install SBOM Plugin
+        run: curl -sSfL https://raw.githubusercontent.com/docker/sbom-cli-plugin/main/install.sh | sh -s --
+
+      - name: Generate SBOM
+        run: |
+          docker sbom --format spdx-json --output SBOM/sbom-python.json ghcr.io/${{ github.repository }}/python:${{ needs.build-image.outputs.tag }}
+          docker sbom --format spdx-json --output SBOM/sbom-cpp.json ghcr.io/${{ github.repository }}/cpp:${{ needs.build-image.outputs.tag }}
+
+      - name: Upload SBOM as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: SBOM
+          path: |
+            SBOM/*.json
+
+      - name: Fail if SBOM changed
+        run: |
+          if [[ -n $(git diff -I'^.*SPDXID' -I'^.*ghcr.io/eclipse-velocitas/devcontainer-base-images' -I'^.*created') ]]; then
+            echo '::error:: SBOM changed, please download the artifacts and commit the new content'
+            exit 1
+          else
+            echo "SBOM is up to date"
+          fi
