@@ -52,7 +52,7 @@ ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-links.txt /requirements/
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-app.txt /requirements/
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/tests/requirements-tests.txt /requirements/
-COPY --chown=4000 ./requirements-common.txt /requirements/
+COPY --chown=4000 ./common/requirements-common.txt /requirements/
 
 WORKDIR /requirements
 # Always install requirements under vscode user to avoid issue with installation of packages

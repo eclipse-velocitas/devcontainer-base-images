@@ -105,7 +105,7 @@ USER 4000
 RUN ./install-k3d-tooling.sh
 
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt  /container/requirements.txt
-COPY --chown=4000 ./requirements-common.txt /container/requirements-common.txt
+COPY --chown=4000 ./common/requirements-common.txt /container/
 # Install Python requirements as vscode user and clean up
 RUN pip3 install -r /container/requirements.txt
 RUN pip3 install -r /container/requirements-common.txt
