@@ -52,6 +52,7 @@ ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-links.txt /requirements/
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-app.txt /requirements/
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/tests/requirements-tests.txt /requirements/
+COPY --chown=4000 ./requirements-common.txt /requirements/
 
 WORKDIR /requirements
 # Always install requirements under vscode user to avoid issue with installation of packages
@@ -59,6 +60,7 @@ RUN pip3 install -r requirements-dev.txt
 RUN pip3 install -r requirements-links.txt
 RUN pip3 install -r requirements-app.txt
 RUN pip3 install -r requirements-tests.txt
+RUN pip3 install -r requirements-common.txt
 # Keep root as last user
 USER root
 WORKDIR /
