@@ -56,11 +56,12 @@ COPY --chown=4000 ./common/requirements-common.txt /requirements/
 
 WORKDIR /requirements
 # Always install requirements under vscode user to avoid issue with installation of packages
-RUN pip3 install -r requirements-dev.txt
-RUN pip3 install -r requirements-links.txt
-RUN pip3 install -r requirements-app.txt
-RUN pip3 install -r requirements-tests.txt
-RUN pip3 install -r requirements-common.txt
+RUN pip3 install -r requirements-dev.txt && \
+    pip3 install -r requirements-links.txt && \
+    pip3 install -r requirements-app.txt && \
+    pip3 install -r requirements-tests.txt && \
+    pip3 install -r requirements-common.txt
+
 # Keep root as last user
 USER root
 WORKDIR /
