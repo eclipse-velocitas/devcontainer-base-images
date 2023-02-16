@@ -93,23 +93,24 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
-COPY ./common /scripts
+COPY ./common /tmp/setup
 
 ARG TARGETARCH
-WORKDIR /scripts
+WORKDIR /tmp/setup
 RUN ./install-python.sh && \
     ./install-dapr-cli.sh && \
     ./install-k3d-prerequisites.sh && \
     ./install-velocitas-cli.sh ${TARGETARCH}
 USER 4000
 RUN ./install-k3d-tooling.sh
+WORKDIR /
 
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt  /container/requirements.txt
-COPY --chown=4000 ./common/requirements-common.txt /container/
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt  /tmp/requirements/requirements.txt
 
 # Install Python requirements as vscode user and clean up
-RUN pip3 install -r /container/requirements.txt && \
-    pip3 install -r /container/requirements-common.txt
+RUN pip3 install -r /tmp/requirements/requirements.txt && \
+    pip3 install -r /tmp/setup/requirements-common.txt && \
+    sudo rm -rf /tmp/setup /tmp/requirements
 
 # We need to set the USER back to root at the end, otherwise we get errors when using this in our repo.
 USER root
