@@ -85,7 +85,7 @@ jobs:
         format: [spdx, cyclonedx]
     name: Generate ${{ matrix.format }} SBOM
     runs-on: ubuntu-22.04
-    needs: [build-image]
+    #needs: [build-image]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -95,8 +95,8 @@ jobs:
 
       - name: Generate SBOM
         run: |
-          docker sbom --format ${{ matrix.format }}-json --output SBOM/${{ matrix.format }}/sbom-python.json ghcr.io/${{ github.repository }}/python:${{ needs.build-image.outputs.tag }}
-          docker sbom --format ${{ matrix.format }}-json --output SBOM/${{ matrix.format }}/sbom-cpp.json ghcr.io/${{ github.repository }}/cpp:${{ needs.build-image.outputs.tag }}
+          docker sbom --format ${{ matrix.format }}-json --output SBOM/${{ matrix.format }}/sbom-python.json ghcr.io/${{ github.repository }}/python:58fc896f9d04c527de13a3e9756cb737645d1580
+          docker sbom --format ${{ matrix.format }}-json --output SBOM/${{ matrix.format }}/sbom-cpp.json ghcr.io/${{ github.repository }}/cpp:58fc896f9d04c527de13a3e9756cb737645d1580
 
       - name: Upload SBOM as artifact
         uses: actions/upload-artifact@v3
