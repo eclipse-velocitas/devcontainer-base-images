@@ -93,27 +93,29 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
-COPY ./common /tmp/setup
+WORKDIR /tmp/setup
+COPY ./common .
 
 ARG TARGETARCH
-WORKDIR /tmp/setup
 RUN ./install-python.sh && \
     ./install-dapr-cli.sh && \
     ./install-k3d-prerequisites.sh && \
     ./install-velocitas-cli.sh ${TARGETARCH}
 USER 4000
 RUN ./install-k3d-tooling.sh
-WORKDIR /
 
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt  /tmp/requirements/requirements.txt
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt ./requirements/requirements.txt
 
 # Install Python requirements as vscode user and clean up
-RUN pip3 install -r /tmp/requirements/requirements.txt && \
-    pip3 install -r /tmp/setup/requirements-common.txt && \
-    sudo rm -rf /tmp/setup /tmp/requirements
+RUN pip3 install -r ./requirements/requirements.txt && \
+    pip3 install -r ./requirements.txt
 
 # We need to set the USER back to root at the end, otherwise we get errors when using this in our repo.
 USER root
+WORKDIR /
+
+# Cleanup temporary files
+RUN rm -rf /tmp/setup
 
 # Obtain pre-build dependencies
 COPY --chown=4000 --from=builder /conan/.conan /home/vscode/.conan

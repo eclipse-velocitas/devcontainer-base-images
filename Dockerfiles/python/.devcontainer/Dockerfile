@@ -36,31 +36,33 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
-COPY ./common /tmp/setup
+WORKDIR /tmp/setup
+COPY ./common .
 
 ARG TARGETARCH
-WORKDIR /tmp/setup
 RUN ./install-python.sh && \
     ./install-dapr-cli.sh && \
     ./install-k3d-prerequisites.sh && \
     ./install-velocitas-cli.sh ${TARGETARCH}
 USER 4000
 RUN ./install-k3d-tooling.sh
-WORKDIR /
 
 # Fetch requirements into requirements folder
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/requirements-dev.txt /tmp/requirements/
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-links.txt /tmp/requirements/
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-app.txt /tmp/requirements/
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/tests/requirements-tests.txt /tmp/requirements/
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/requirements-dev.txt ./requirements/
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-links.txt ./requirements/
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-app.txt ./requirements/
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/tests/requirements-tests.txt ./requirements/
 
 # Always install requirements under vscode user to avoid issue with installation of packages
-RUN pip3 install -r /tmp/requirements/requirements-dev.txt && \
-    pip3 install -r /tmp/requirements/requirements-links.txt && \
-    pip3 install -r /tmp/requirements/requirements-app.txt && \
-    pip3 install -r /tmp/requirements/requirements-tests.txt && \
-    pip3 install -r /tmp/setup/requirements-common.txt && \
-    sudo rm -rf /tmp/setup /tmp/requirements
+RUN pip3 install -r ./requirements/requirements-dev.txt && \
+    pip3 install -r ./requirements/requirements-links.txt && \
+    pip3 install -r ./requirements/requirements-app.txt && \
+    pip3 install -r ./requirements/requirements-tests.txt && \
+    pip3 install -r ./requirements.txt
 
 # Keep root as last user
 USER root
+WORKDIR /
+
+# Cleanup temporary files
+RUN rm -rf /tmp/setup
