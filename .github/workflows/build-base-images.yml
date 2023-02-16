@@ -108,7 +108,9 @@ jobs:
 
       - name: Fail if SBOM changed
         run: |
-          if [[ -n $(git diff -w -I'^.*SPDXID' -I'^.*ghcr.io/eclipse-velocitas/devcontainer-base-images' -I'^.*created' -I'.*spdxElementId' -I'.*relatedSpdxElement') ]]; then
+          if [[ -n $(git diff -w -I'^.*SPDXID' -I'^.*ghcr.io/eclipse-velocitas/devcontainer-base-images' \
+          -I'^.*created' -I'^.*spdxElementId' -I'^.*relatedSpdxElement' \
+          -I'^.*serialNumber' -I'^.*timestamp') ]]; then
             echo '::error:: SBOM changed, please download the artifacts and commit the new content'
             exit 1
           else
