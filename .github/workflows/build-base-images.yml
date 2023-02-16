@@ -81,6 +81,7 @@ jobs:
 
   generate-sbom:
     strategy:
+      fail-fast: false
       matrix:
         format: [spdx, cyclonedx]
     name: Generate ${{ matrix.format }} SBOM
