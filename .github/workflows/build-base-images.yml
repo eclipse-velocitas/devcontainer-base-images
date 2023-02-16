@@ -80,7 +80,10 @@ jobs:
           subFolder: ./Dockerfiles/${{ matrix.language }}/
 
   generate-sbom:
-    name: Generate SBOM
+    strategy:
+      matrix:
+        format: [spdx, cyclonedx]
+    name: Generate ${{ matrix.format }} SBOM
     runs-on: ubuntu-22.04
     needs: [build-image]
     steps:
@@ -92,15 +95,15 @@ jobs:
 
       - name: Generate SBOM
         run: |
-          docker sbom --format spdx-json --output SBOM/sbom-python.json ghcr.io/${{ github.repository }}/python:${{ needs.build-image.outputs.tag }}
-          docker sbom --format spdx-json --output SBOM/sbom-cpp.json ghcr.io/${{ github.repository }}/cpp:${{ needs.build-image.outputs.tag }}
+          docker sbom --format ${{ matrix.format }}-json --output SBOM/${{ matrix.format }}/sbom-python.json ghcr.io/${{ github.repository }}/python:${{ needs.build-image.outputs.tag }}
+          docker sbom --format ${{ matrix.format }}-json --output SBOM/${{ matrix.format }}/sbom-cpp.json ghcr.io/${{ github.repository }}/cpp:${{ needs.build-image.outputs.tag }}
 
       - name: Upload SBOM as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: SBOM
+          name: SBOM ${{ matrix.format }}
           path: |
-            SBOM/*.json
+            SBOM/${{ matrix.format }}/*.json
 
       - name: Fail if SBOM changed
         run: |
