@@ -28,6 +28,8 @@ on:
   pull_request:
     branches:
       - main
+env: 
+  UBUNTU_VERSION: ubuntu-22.04
 
 jobs:
   build-image:
@@ -38,7 +40,7 @@ jobs:
     name: "Building image"
     outputs:
       tag: ${{ steps.get-tag.outputs.tag }}
-    runs-on: ubuntu-22.04
+    runs-on: $UBUNTU_VERSION
 
     steps:
       - name: Checkout repository
@@ -85,7 +87,7 @@ jobs:
       matrix:
         format: [spdx, cyclonedx]
     name: Generate ${{ matrix.format }} SBOM
-    runs-on: ubuntu-22.04
+    runs-on: $UBUNTU_VERSION
     needs: [build-image]
     steps:
       - name: Checkout repository
