@@ -80,38 +80,32 @@ jobs:
           subFolder: ./Dockerfiles/${{ matrix.language }}/
 
   generate-sbom:
-    strategy:
-      fail-fast: false
-      matrix:
-        format: [spdx, cyclonedx]
     name: Generate ${{ matrix.format }} SBOM
     runs-on: ubuntu-22.04
-    needs: [build-image]
+    #needs: [build-image]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install SBOM Plugin
-        run: curl -sSfL https://raw.githubusercontent.com/docker/sbom-cli-plugin/main/install.sh | sh -s --
+      - name: Install Syft
+        run: curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
 
       - name: Generate SBOM
         run: |
-          docker sbom --format ${{ matrix.format }}-json --output SBOM/python.${{ matrix.format }}.json ghcr.io/${{ github.repository }}/python:${{ needs.build-image.outputs.tag }}
-          docker sbom --format ${{ matrix.format }}-json --output SBOM/cpp.${{ matrix.format }}.json ghcr.io/${{ github.repository }}/cpp:${{ needs.build-image.outputs.tag }}
+          syft -o spdx-json=SBOM/python.spdx.json -o cyclonedx-json=SBOM/python.cyclonedx.json ghcr.io/${{ github.repository }}/python:latest # ${{ needs.build-image.outputs.tag }}
+          syft -o spdx-json=SBOM/cpp.spdx.json -o cyclonedx-json=SBOM/cpp.cyclonedx.json ghcr.io/${{ github.repository }}/cpp:latest # ${{ needs.build-image.outputs.tag }}
 
       - name: Upload SBOM as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: SBOM ${{ matrix.format }}
+          name: SBOM
           path: |
             SBOM/*.json
 
       - uses: EndBug/add-and-commit@v9
-        if: ${{ github.ref }} == "refs/heads/main" # only directly push on scheduled runs
+        if: github.ref == 'refs/heads/main' # only directly push on scheduled runs
         with:
           message: 'Updated SBOM'
-          commit: --signoff
-          pull: '--rebase'
 
       - name: Fail if SBOM changed # If in a PR or not on main, fail if SBOM changed
         run: |
