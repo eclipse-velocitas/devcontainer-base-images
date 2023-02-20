@@ -36,7 +36,9 @@ jobs:
         language: [python, cpp]
 
     name: "Building image"
-    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.get-tag.outputs.tag }}
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout repository
@@ -76,3 +78,53 @@ jobs:
           push: always
           platform: linux/amd64,linux/arm64
           subFolder: ./Dockerfiles/${{ matrix.language }}/
+
+  generate-sbom:
+    name: Generate SBOM
+    runs-on: ubuntu-22.04
+    needs: [build-image]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Install Syft
+        run: curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+
+      - name: Generate SBOM
+        run: |
+          syft -o spdx-json=SBOM/python.spdx.json -o cyclonedx-json=SBOM/python.cyclonedx.json ghcr.io/${{ github.repository }}/python:${{ needs.build-image.outputs.tag }}
+          syft -o spdx-json=SBOM/cpp.spdx.json -o cyclonedx-json=SBOM/cpp.cyclonedx.json ghcr.io/${{ github.repository }}/cpp:${{ needs.build-image.outputs.tag }}
+
+      - name: Upload SBOM as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: SBOM
+          path: |
+            SBOM/*.json
+
+      - name: Check if SBOM changed
+        id: check-sbom
+        run: |
+          if [[ -n $(git diff -w -I'^.*SPDXID' -I'^.*ghcr.io/${{ github.repository }}' \
+          -I'^.*created' -I'^.*spdxElementId' -I'^.*relatedSpdxElement' -I'^.*comment' -I'^.*version": "sha256' \
+          -I'^.*serialNumber' -I'^.*timestamp' -I'^.*"value": "sha256:' -I'^.*bom-ref') ]]; then
+            echo "SBOM changed"
+            echo "SBOM_CHANGED=true" >> $GITHUB_OUTPUT
+          else
+            echo "SBOM up to date"
+            echo "SBOM_CHANGED=false" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: EndBug/add-and-commit@v9
+        id: push-changes
+        if: steps.check-sbom.outputs.SBOM_CHANGED == 'true'
+        with:
+          message: 'Updated SBOM'
+
+      - name: Fail if SBOM changed and not commited
+        if: steps.check-sbom.outputs.SBOM_CHANGED == 'true' && steps.push-changes.outputs.pushed != 'true'
+        run: |
+            echo '::error:: SBOM changed, please download the artifacts and commit the new content'
+            exit 1
