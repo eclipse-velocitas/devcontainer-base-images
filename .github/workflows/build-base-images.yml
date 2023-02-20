@@ -80,7 +80,7 @@ jobs:
           subFolder: ./Dockerfiles/${{ matrix.language }}/
 
   generate-sbom:
-    name: Generate ${{ matrix.format }} SBOM
+    name: Generate SBOM
     runs-on: ubuntu-22.04
     needs: [build-image]
     steps:
