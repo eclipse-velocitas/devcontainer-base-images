@@ -108,8 +108,10 @@ jobs:
           if [[ -n $(git diff -w -I'^.*SPDXID' -I'^.*ghcr.io/${{ github.repository }}' \
           -I'^.*created' -I'^.*spdxElementId' -I'^.*relatedSpdxElement' -I'^.*comment' -I'^.*version": "sha256' \
           -I'^.*serialNumber' -I'^.*timestamp' -I'^.*"value": "sha256:' -I'^.*bom-ref') ]]; then
+            echo "SBOM changed"
             echo "SBOM_CHANGED=true" >> $GITHUB_OUTPUT
           else
+            echo "SBOM up to date"
             echo "SBOM_CHANGED=false" >> $GITHUB_OUTPUT
           fi
 
