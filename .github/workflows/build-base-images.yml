@@ -96,17 +96,24 @@ jobs:
 
       - name: Generate SBOM
         run: |
-          docker sbom --format ${{ matrix.format }}-json --output SBOM/${{ matrix.format }}/sbom-python.json ghcr.io/${{ github.repository }}/python:${{ needs.build-image.outputs.tag }}
-          docker sbom --format ${{ matrix.format }}-json --output SBOM/${{ matrix.format }}/sbom-cpp.json ghcr.io/${{ github.repository }}/cpp:${{ needs.build-image.outputs.tag }}
+          docker sbom --format ${{ matrix.format }}-json --output SBOM/python.${{ matrix.format }}.json ghcr.io/${{ github.repository }}/python:${{ needs.build-image.outputs.tag }}
+          docker sbom --format ${{ matrix.format }}-json --output SBOM/cpp.${{ matrix.format }}.json ghcr.io/${{ github.repository }}/cpp:${{ needs.build-image.outputs.tag }}
 
       - name: Upload SBOM as artifact
         uses: actions/upload-artifact@v3
         with:
           name: SBOM ${{ matrix.format }}
           path: |
-            SBOM/${{ matrix.format }}/*.json
+            SBOM/*.json
 
-      - name: Fail if SBOM changed
+      - uses: EndBug/add-and-commit@v9
+        if: ${{ github.ref }} == "refs/heads/main" # only directly push on scheduled runs
+        with:
+          message: 'Updated SBOM'
+          commit: --signoff
+          pull: '--rebase'
+
+      - name: Fail if SBOM changed # If in a PR or not on main, fail if SBOM changed
         run: |
           if [[ -n $(git diff -w -I'^.*SPDXID' -I'^.*ghcr.io/${{ github.repository }}' \
           -I'^.*created' -I'^.*spdxElementId' -I'^.*relatedSpdxElement' -I'^.*comment' -I'^.*version": "sha256' \
