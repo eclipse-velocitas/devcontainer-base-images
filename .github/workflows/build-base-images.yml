@@ -104,7 +104,7 @@ jobs:
           path: |
             SBOM/*.json
 
-      - name: Check if SBOM changed # If in a PR or not on main, fail if SBOM changed
+      - name: Check if SBOM changed
         id: check-sbom
         run: |
           if [[ -n $(git diff -w -I'^.*SPDXID' -I'^.*ghcr.io/${{ github.repository }}' \
