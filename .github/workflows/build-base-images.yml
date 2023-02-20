@@ -84,10 +84,8 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [build-image]
     steps:
-      - uses: actions/checkout@v3
-        with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Install Syft
         run: curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
