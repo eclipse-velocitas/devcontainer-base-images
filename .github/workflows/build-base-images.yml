@@ -118,7 +118,7 @@ jobs:
 
       - uses: EndBug/add-and-commit@v9
         id: push-changes
-        if: steps.check-sbom.outputs.SBOM_CHANGED == 'true' && github.ref == 'refs/heads/main' # only directly push on scheduled runs
+        if: steps.check-sbom.outputs.SBOM_CHANGED == 'true'
         with:
           message: 'Updated SBOM'
 
