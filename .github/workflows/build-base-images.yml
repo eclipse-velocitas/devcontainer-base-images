@@ -82,7 +82,7 @@ jobs:
   generate-sbom:
     name: Generate SBOM
     runs-on: ubuntu-22.04
-    # needs: [build-image]
+    needs: [build-image]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -94,8 +94,8 @@ jobs:
 
       - name: Generate SBOM
         run: |
-          syft -o spdx-json=SBOM/python.spdx.json -o cyclonedx-json=SBOM/python.cyclonedx.json ghcr.io/${{ github.repository }}/python:3eadd5dd252eee1d43d166243764523a931d6637 # ${{ needs.build-image.outputs.tag }}
-          syft -o spdx-json=SBOM/cpp.spdx.json -o cyclonedx-json=SBOM/cpp.cyclonedx.json ghcr.io/${{ github.repository }}/cpp:3eadd5dd252eee1d43d166243764523a931d6637 # ${{ needs.build-image.outputs.tag }}
+          syft -o spdx-json=SBOM/python.spdx.json -o cyclonedx-json=SBOM/python.cyclonedx.json ghcr.io/${{ github.repository }}/python:${{ needs.build-image.outputs.tag }}
+          syft -o spdx-json=SBOM/cpp.spdx.json -o cyclonedx-json=SBOM/cpp.cyclonedx.json ghcr.io/${{ github.repository }}/cpp:${{ needs.build-image.outputs.tag }}
 
       - name: Upload SBOM as artifact
         uses: actions/upload-artifact@v3
