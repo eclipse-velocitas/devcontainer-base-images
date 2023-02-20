@@ -92,8 +92,8 @@ jobs:
 
       - name: Generate SBOM
         run: |
-          syft -o spdx-json=SBOM/python.spdx.json -o cyclonedx-json=SBOM/python.cyclonedx.json ghcr.io/${{ github.repository }}/python:latest # ${{ needs.build-image.outputs.tag }}
-          syft -o spdx-json=SBOM/cpp.spdx.json -o cyclonedx-json=SBOM/cpp.cyclonedx.json ghcr.io/${{ github.repository }}/cpp:latest # ${{ needs.build-image.outputs.tag }}
+          syft -o spdx-json=SBOM/python.spdx.json -o cyclonedx-json=SBOM/python.cyclonedx.json ghcr.io/${{ github.repository }}/python:f4bab8efcf5b703e1dfa11355955d6e04df63a9d # ${{ needs.build-image.outputs.tag }}
+          syft -o spdx-json=SBOM/cpp.spdx.json -o cyclonedx-json=SBOM/cpp.cyclonedx.json ghcr.io/${{ github.repository }}/cpp:f4bab8efcf5b703e1dfa11355955d6e04df63a9d # ${{ needs.build-image.outputs.tag }}
 
       - name: Upload SBOM as artifact
         uses: actions/upload-artifact@v3
@@ -102,18 +102,25 @@ jobs:
           path: |
             SBOM/*.json
 
-      - uses: EndBug/add-and-commit@v9
-        if: github.ref == 'refs/heads/main' # only directly push on scheduled runs
-        with:
-          message: 'Updated SBOM'
-
-      - name: Fail if SBOM changed # If in a PR or not on main, fail if SBOM changed
+      - name: Check if SBOM changed # If in a PR or not on main, fail if SBOM changed
+        id: check-sbom
         run: |
           if [[ -n $(git diff -w -I'^.*SPDXID' -I'^.*ghcr.io/${{ github.repository }}' \
           -I'^.*created' -I'^.*spdxElementId' -I'^.*relatedSpdxElement' -I'^.*comment' -I'^.*version": "sha256' \
           -I'^.*serialNumber' -I'^.*timestamp' -I'^.*"value": "sha256:' -I'^.*bom-ref') ]]; then
+            echo "SBOM_CHANGED=true" >> $GITHUB_OUTPUT
+          else
+            echo "SBOM_CHANGED=false" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: EndBug/add-and-commit@v9
+        id: push-changes
+        if: steps.check-sbom.outputs.SBOM_CHANGED == true # && github.ref == 'refs/heads/main' # only directly push on scheduled runs
+        with:
+          message: 'Updated SBOM'
+
+      - name: Fail if SBOM changed and not commited
+        if: steps.check-sbom.outputs.SBOM_CHANGED == true && steps.push-changes.outputs.pushed != true
+        run: |
             echo '::error:: SBOM changed, please download the artifacts and commit the new content'
             exit 1
-          else
-            echo "SBOM is up to date"
-          fi
