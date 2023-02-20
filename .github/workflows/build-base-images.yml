@@ -117,12 +117,12 @@ jobs:
 
       - uses: EndBug/add-and-commit@v9
         id: push-changes
-        if: steps.check-sbom.outputs.SBOM_CHANGED == true # && github.ref == 'refs/heads/main' # only directly push on scheduled runs
+        if: steps.check-sbom.outputs.SBOM_CHANGED == 'true' # && github.ref == 'refs/heads/main' # only directly push on scheduled runs
         with:
           message: 'Updated SBOM'
 
       - name: Fail if SBOM changed and not commited
-        if: steps.check-sbom.outputs.SBOM_CHANGED == true && steps.push-changes.outputs.pushed != true
+        if: steps.check-sbom.outputs.SBOM_CHANGED == 'true' && steps.push-changes.outputs.pushed != 'true'
         run: |
             echo '::error:: SBOM changed, please download the artifacts and commit the new content'
             exit 1
