@@ -82,7 +82,7 @@ jobs:
   generate-sbom:
     name: Generate ${{ matrix.format }} SBOM
     runs-on: ubuntu-22.04
-    #needs: [build-image]
+    needs: [build-image]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -94,8 +94,8 @@ jobs:
 
       - name: Generate SBOM
         run: |
-          syft -o spdx-json=SBOM/python.spdx.json -o cyclonedx-json=SBOM/python.cyclonedx.json ghcr.io/${{ github.repository }}/python:f4bab8efcf5b703e1dfa11355955d6e04df63a9d # ${{ needs.build-image.outputs.tag }}
-          syft -o spdx-json=SBOM/cpp.spdx.json -o cyclonedx-json=SBOM/cpp.cyclonedx.json ghcr.io/${{ github.repository }}/cpp:f4bab8efcf5b703e1dfa11355955d6e04df63a9d # ${{ needs.build-image.outputs.tag }}
+          syft -o spdx-json=SBOM/python.spdx.json -o cyclonedx-json=SBOM/python.cyclonedx.json ghcr.io/${{ github.repository }}/python:${{ needs.build-image.outputs.tag }}
+          syft -o spdx-json=SBOM/cpp.spdx.json -o cyclonedx-json=SBOM/cpp.cyclonedx.json ghcr.io/${{ github.repository }}/cpp:${{ needs.build-image.outputs.tag }}
 
       - name: Upload SBOM as artifact
         uses: actions/upload-artifact@v3
@@ -119,7 +119,7 @@ jobs:
 
       - uses: EndBug/add-and-commit@v9
         id: push-changes
-        if: steps.check-sbom.outputs.SBOM_CHANGED == 'true' # && github.ref == 'refs/heads/main' # only directly push on scheduled runs
+        if: steps.check-sbom.outputs.SBOM_CHANGED == 'true' && github.ref == 'refs/heads/main' # only directly push on scheduled runs
         with:
           message: 'Updated SBOM'
 
