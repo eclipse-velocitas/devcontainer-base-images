@@ -1,10 +1,10 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.4",
-  "serialNumber": "urn:uuid:6d816fa6-073c-4521-94fe-fe50eb18210c",
+  "serialNumber": "urn:uuid:3411026f-0ab7-44a7-a2b8-033e86617257",
   "version": 1,
   "metadata": {
-    "timestamp": "2023-02-21T08:47:47Z",
+    "timestamp": "2023-02-21T14:53:29Z",
     "tools": [
       {
         "vendor": "anchore",
@@ -13,10 +13,10 @@
       }
     ],
     "component": {
-      "bom-ref": "f822cc2ddbe22c2a",
+      "bom-ref": "fc75e8352360eb11",
       "type": "container",
       "name": "ghcr.io/eclipse-velocitas/devcontainer-base-images/cpp:latest",
-      "version": "sha256:009a01d3190529bfaeae576cf3e9387de5d45f9fccd24a0fa36d1cd11f6dbd42"
+      "version": "sha256:6d8bdc1adfdc7ab1272f19d357cf16c076df7f8b74a1e7c568a4981f22ceb26a"
     }
   },
   "components": [
