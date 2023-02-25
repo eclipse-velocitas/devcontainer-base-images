@@ -1,22 +1,22 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.4",
-  "serialNumber": "urn:uuid:53214acc-117f-4332-8d8d-745c5aabdf31",
+  "serialNumber": "urn:uuid:bbeab76d-7c67-47bd-afff-17bf82df36e9",
   "version": 1,
   "metadata": {
-    "timestamp": "2023-02-22T08:55:27Z",
+    "timestamp": "2023-02-25T13:03:36Z",
     "tools": [
       {
         "vendor": "anchore",
         "name": "syft",
-        "version": "0.72.0"
+        "version": "0.73.0"
       }
     ],
     "component": {
-      "bom-ref": "4b38f9a90f5c496a",
+      "bom-ref": "5404a1a8698124b7",
       "type": "container",
       "name": "ghcr.io/eclipse-velocitas/devcontainer-base-images/python:latest",
-      "version": "sha256:5531d77feeede8591e19068d0f8e815a2d71a92b84f115782a40092ac4093f5f"
+      "version": "sha256:5b76f19704b13ce392f76d55d62209f0ff1ad58ef86c20dd56c2e0ad263f0d62"
     }
   },
   "components": [
@@ -94768,7 +94768,7 @@
       ]
     },
     {
-      "bom-ref": "pkg:generic/python@3.10.6?package-id=fe62cb9853bc861",
+      "bom-ref": "pkg:generic/python@3.10.6?package-id=81e27e974c68fc4f",
       "type": "application",
       "name": "python",
       "version": "3.10.6",
@@ -94802,81 +94802,21 @@
         {
           "name": "syft:location:0:path",
           "value": "/usr/bin/python3.10"
-        }
-      ]
-    },
-    {
-      "bom-ref": "pkg:generic/python@3.10.6?package-id=d97291d37fc2de9e",
-      "type": "application",
-      "name": "python",
-      "version": "3.10.6",
-      "cpe": "cpe:2.3:a:python_software_foundation:python:3.10.6:*:*:*:*:*:*:*",
-      "purl": "pkg:generic/python@3.10.6",
-      "properties": [
-        {
-          "name": "syft:package:foundBy",
-          "value": "binary-cataloger"
         },
         {
-          "name": "syft:package:metadataType",
-          "value": "BinaryMetadata"
-        },
-        {
-          "name": "syft:package:type",
-          "value": "binary"
-        },
-        {
-          "name": "syft:cpe23",
-          "value": "cpe:2.3:a:python:python:3.10.6:*:*:*:*:*:*:*"
-        },
-        {
-          "name": "syft:cpe23",
-          "value": "cpe:2.3:a:python:python:3.10.6:*:*:*:*:*:*:*"
-        },
-        {
-          "name": "syft:location:0:layerID",
+          "name": "syft:location:1:layerID",
           "value": "sha256:a149e5b8a9f90d60cbc083b4de95eab9cd67134a5496e9332056ecb8a64db88d"
         },
         {
-          "name": "syft:location:0:path",
+          "name": "syft:location:1:path",
           "value": "/usr/include/python3.10/patchlevel.h"
-        }
-      ]
-    },
-    {
-      "bom-ref": "pkg:generic/python@3.10.6?package-id=5d2c9d300e3f43af",
-      "type": "application",
-      "name": "python",
-      "version": "3.10.6",
-      "cpe": "cpe:2.3:a:python_software_foundation:python:3.10.6:*:*:*:*:*:*:*",
-      "purl": "pkg:generic/python@3.10.6",
-      "properties": [
-        {
-          "name": "syft:package:foundBy",
-          "value": "binary-cataloger"
         },
         {
-          "name": "syft:package:metadataType",
-          "value": "BinaryMetadata"
-        },
-        {
-          "name": "syft:package:type",
-          "value": "binary"
-        },
-        {
-          "name": "syft:cpe23",
-          "value": "cpe:2.3:a:python:python:3.10.6:*:*:*:*:*:*:*"
-        },
-        {
-          "name": "syft:cpe23",
-          "value": "cpe:2.3:a:python:python:3.10.6:*:*:*:*:*:*:*"
-        },
-        {
-          "name": "syft:location:0:layerID",
+          "name": "syft:location:2:layerID",
           "value": "sha256:a149e5b8a9f90d60cbc083b4de95eab9cd67134a5496e9332056ecb8a64db88d"
         },
         {
-          "name": "syft:location:0:path",
+          "name": "syft:location:2:path",
           "value": "/usr/lib/x86_64-linux-gnu/libpython3.10.so.1.0"
         }
       ]
