@@ -24,10 +24,13 @@ chmod 700 get_helm.sh
 sudo chmod +x /usr/local/bin/helm
 
 # Install kubectl
-#if ! command -v kubectl &> /dev/null
-#then
-#    sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-#    echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-#    sudo apt-get update
-#    sudo apt-get install -y kubectl
-#fi
+if ! command -v kubectl &> /dev/null
+then
+    # FIXME: Kubernetes download is not working as of 02.27.2023 - Google servers respond with 500 (in rare occassions 404)
+    # Until they have fixed their issue, we are using a cached version of the apt-key.
+    #sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    mv ./google-apt-key.gpg /usr/share/keyrings/kubernetes-archive-keyring.gpg
+    echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+    sudo apt-get update
+    sudo apt-get install -y kubectl
+fi
