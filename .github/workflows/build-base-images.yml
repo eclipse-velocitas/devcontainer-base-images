@@ -1,4 +1,4 @@
-# Copyright (c) 2022 Robert Bosch GmbH and Microsoft Corporation
+# Copyright (c) 2022-2023 Robert Bosch GmbH and Microsoft Corporation
 #
 # This program and the accompanying materials are made available under the
 # terms of the Apache License, Version 2.0 which is available at
@@ -31,14 +31,13 @@ on:
 
 jobs:
   build-image:
-    strategy:
-      matrix:
-        language: [python, cpp]
-
-    name: "Building image"
+    name: Building image
     outputs:
       tag: ${{ steps.get-tag.outputs.tag }}
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        language: [python, cpp]
 
     steps:
       - name: Checkout repository
@@ -58,9 +57,15 @@ jobs:
         run: |
           TAG=${{ github.sha }}
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            TAG=latest
+            TAG="${TAG}, latest"
           fi
           echo "tag=${TAG}" >> $GITHUB_OUTPUT
+
+      - id: github-repository-name-case-adjusted
+        name: Prepare repository name in lower case for docker upload.
+        uses: ASzc/change-string-case-action@v5
+        with:
+          string: ${{ github.repository }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -73,7 +78,7 @@ jobs:
         id: image_build
         uses: devcontainers/ci@v0.3
         with:
-          imageName: ghcr.io/${{ github.repository }}/${{ matrix.language }}
+          imageName: ghcr.io/${{ steps.github-repository-name-case-adjusted.outputs.lowercase }}/${{ matrix.language }}
           imageTag: ${{ steps.get-tag.outputs.tag }}
           push: always
           platform: linux/amd64,linux/arm64
@@ -84,6 +89,7 @@ jobs:
     name: Generate SBOM
     runs-on: ubuntu-22.04
     needs: [build-image]
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -105,27 +111,9 @@ jobs:
           path: |
             SBOM/*.json
 
-      - name: Check if SBOM changed
-        id: check-sbom
-        run: |
-          if [[ -n $(git diff -w -I'^.*SPDXID' -I'^.*ghcr.io/${{ github.repository }}' \
-          -I'^.*created' -I'^.*spdxElementId' -I'^.*relatedSpdxElement' -I'^.*comment' -I'^.*version": "sha256' \
-          -I'^.*serialNumber' -I'^.*timestamp' -I'^.*"value": "sha256:' -I'^.*bom-ref') ]]; then
-            echo "SBOM changed"
-            echo "SBOM_CHANGED=true" >> $GITHUB_OUTPUT
-          else
-            echo "SBOM up to date"
-            echo "SBOM_CHANGED=false" >> $GITHUB_OUTPUT
-          fi
-
       - uses: EndBug/add-and-commit@v9
         id: push-changes
-        if: steps.check-sbom.outputs.SBOM_CHANGED == 'true'
         with:
           message: 'Updated SBOM'
-
-      - name: Fail if SBOM changed and not commited
-        if: steps.check-sbom.outputs.SBOM_CHANGED == 'true' && steps.push-changes.outputs.pushed != 'true'
-        run: |
-            echo '::error:: SBOM changed, please download the artifacts and commit the new content'
-            exit 1
+          new_branch: sbom
+          push: origin sbom --set-upstream --force
