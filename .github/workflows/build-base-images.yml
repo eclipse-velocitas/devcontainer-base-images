@@ -71,7 +71,7 @@ jobs:
 
       - name: Build image and push
         id: image_build
-        uses: devcontainers/ci@84fc3a0920e0f9ef1d02c89d909a1c7e3379f5b8
+        uses: devcontainers/ci@v0.3
         with:
           imageName: ghcr.io/${{ github.repository }}/${{ matrix.language }}
           imageTag: ${{ steps.get-tag.outputs.tag }}
