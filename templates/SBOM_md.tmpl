@@ -1,0 +1,5 @@
+| Software            | Version             | Type                | License             |
+| :------------------ | :------------------ | :------------------ | :------------------ |
+{{- range .Artifacts}}
+|{{.Name}}|{{.Version}}|{{.Type}}|{{.Licenses}}
+{{- end}}
