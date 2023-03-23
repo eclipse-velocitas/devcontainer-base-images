@@ -102,8 +102,8 @@ jobs:
 
       - name: Generate SBOM
         run: |
-          syft -o spdx-json=SBOM/python.spdx.json -o cyclonedx-json=SBOM/python.cyclonedx.json ghcr.io/${{ github.repository }}/python:${{ needs.build-image.outputs.tag }}
-          syft -o spdx-json=SBOM/cpp.spdx.json -o cyclonedx-json=SBOM/cpp.cyclonedx.json ghcr.io/${{ github.repository }}/cpp:${{ needs.build-image.outputs.tag }}
+          syft -o template=SBOM/python.md -t ./md.tmpl -o spdx-json=SBOM/python.spdx.json -o cyclonedx-json=SBOM/python.cyclonedx.json ghcr.io/${{ github.repository }}/python:${{ needs.build-image.outputs.tag }}
+          syft -o template=SBOM/cpp.md -t ./md.tmpl -o spdx-json=SBOM/cpp.spdx.json -o cyclonedx-json=SBOM/cpp.cyclonedx.json ghcr.io/${{ github.repository }}/cpp:${{ needs.build-image.outputs.tag }}
           # fix for different SPDX versions
           sed -i -e 's/PACKAGE-MANAGER/PACKAGE_MANAGER/g' SBOM/python.spdx.json SBOM/cpp.spdx.json
 
