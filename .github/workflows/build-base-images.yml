@@ -102,17 +102,28 @@ jobs:
 
       - name: Generate SBOM
         run: |
-          syft -o template=SBOM/python.md -t templates/SBOM_md.tmpl -o spdx-json=SBOM/python.spdx.json -o cyclonedx-json=SBOM/python.cyclonedx.json ghcr.io/${{ github.repository }}/python:${{ needs.build-image.outputs.tag }}
-          syft -o template=SBOM/cpp.md -t templates/SBOM_md.tmpl -o spdx-json=SBOM/cpp.spdx.json -o cyclonedx-json=SBOM/cpp.cyclonedx.json ghcr.io/${{ github.repository }}/cpp:${{ needs.build-image.outputs.tag }}
+          architectures=(arm64 amd64)
+          languages=(cpp python)
+          for arch in "${architectures[@]}"
+          do
+            for lang in "${languages[@]}"
+            do
+              syft --platform $arch \
+              -o template=SBOM/Markdown/$lang\_$arch.md -t templates/SBOM_md.tmpl \
+              -o spdx-json=SBOM/SPDX/$lang\_$arch.spdx.json \
+              -o cyclonedx-json=SBOM/CycloneDX/$lang\_$arch.cyclonedx.json \
+              ghcr.io/${{ github.repository }}/$lang:${{ needs.build-image.outputs.tag }}
+            done
+          done
           # fix for different SPDX versions
-          sed -i -e 's/PACKAGE-MANAGER/PACKAGE_MANAGER/g' SBOM/python.spdx.json SBOM/cpp.spdx.json
+          sed -i -e 's/PACKAGE-MANAGER/PACKAGE_MANAGER/g' SBOM/SPDX/*.spdx.json
 
       - name: Upload SBOM as artifact
         uses: actions/upload-artifact@v3
         with:
           name: SBOM
           path: |
-            SBOM/*.json
+            SBOM/*
 
       - uses: EndBug/add-and-commit@v9
         id: push-changes
