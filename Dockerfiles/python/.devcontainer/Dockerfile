@@ -48,10 +48,10 @@ USER 4000
 RUN ./install-k3d-tooling.sh
 
 # Fetch requirements into requirements folder
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/requirements.txt ./requirements/dev
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-links.txt ./requirements/app
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements.txt ./requirements/app
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/tests/requirements.txt ./requirements/tests
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/requirements.txt ./requirements/dev/requirements.txt
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-links.txt ./requirements/app/requirements-links.txt
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements.txt ./requirements/app/requirements.txt
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/tests/requirements.txt ./requirements/tests/requirements.txt
 
 # Always install requirements under vscode user to avoid issue with installation of packages
 RUN pip3 install -r ./requirements/dev/requirements.txt && \
