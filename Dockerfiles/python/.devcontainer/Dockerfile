@@ -15,14 +15,7 @@
 FROM ubuntu:22.04
 
 RUN apt-get update && apt-get upgrade -y && \
-        apt-get install -y apt-utils openssh-client gnupg2 dirmngr iproute2 \
-        procps lsof htop net-tools psmisc manpages manpages-dev \
-        curl tree wget rsync ca-certificates unzip init-system-helpers \
-        bzip2 zip nano vim-tiny less jq lsb-release git zsh pigz \
-        apt-transport-https dialog libc6 libgcc1 libkrb5-3 iptables \
-        libgssapi-krb5-2 libicu[0-9][0-9] liblttng-ust[0-9] \
-        libstdc++6 zlib1g locales sudo ncdu man-db strace gnupg2 \
-        build-essential python3-dev
+    apt-get install -y jq sudo curl wget git
 
 # Create non-root user
 ARG USERNAME=vscode
@@ -31,8 +24,6 @@ ARG USER_GID=$USER_UID
 
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    && apt-get update \
-    && apt-get install -y sudo \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
@@ -42,10 +33,8 @@ COPY ./common .
 ARG TARGETARCH
 RUN ./install-python.sh && \
     ./install-dapr-cli.sh && \
-    ./install-k3d-prerequisites.sh && \
     ./install-velocitas-cli.sh ${TARGETARCH}
 USER 4000
-RUN ./install-k3d-tooling.sh
 
 # Fetch requirements into requirements folder
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/requirements.txt ./requirements/dev/requirements.txt

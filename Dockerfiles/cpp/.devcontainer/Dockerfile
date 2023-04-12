@@ -19,17 +19,10 @@
 FROM --platform=$BUILDPLATFORM ubuntu:22.04 as builder
 
 RUN apt-get update && apt-get upgrade -y && \
-        apt-get install -y apt-utils openssh-client gnupg2 dirmngr iproute2 \
-        procps lsof htop net-tools psmisc manpages manpages-dev \
-        curl wget ca-certificates unzip init-system-helpers \
-        bzip2 zip git zsh pigz jq \
-        apt-transport-https dialog libkrb5-3 \
-        libgssapi-krb5-2 libicu[0-9][0-9] liblttng-ust[0-9] \
-        locales sudo ncdu cmake \
-        build-essential build-essential \
-        gcc-aarch64-linux-gnu g++-aarch64-linux-gnu binutils-aarch64-linux-gnu \
-        gcc-x86-64-linux-gnu g++-x86-64-linux-gnu binutils-x86-64-linux-gnu && \
-        apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+    apt-get install -y jq sudo curl wget git cmake build-essential \
+    gcc-aarch64-linux-gnu g++-aarch64-linux-gnu binutils-aarch64-linux-gnu \
+    gcc-x86-64-linux-gnu g++-x86-64-linux-gnu binutils-x86-64-linux-gnu && \
+    apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/conanfile.py /container/cpp/
 
@@ -66,20 +59,14 @@ RUN conan remove --builds --src --force '*'
 FROM --platform=$TARGETPLATFORM ubuntu:22.04 as final
 
 RUN apt-get --fix-missing update && apt-get upgrade -y && \
-        apt-get install -y apt-utils openssh-client gnupg2 dirmngr iproute2 \
-        procps lsof htop net-tools psmisc manpages manpages-dev \
-        curl tree wget ca-certificates unzip init-system-helpers \
-        bzip2 zip nano vim-tiny less jq lsb-release git zsh pigz \
-        apt-transport-https dialog libgcc1 libkrb5-3 iptables \
-        libgssapi-krb5-2 libicu[0-9][0-9] liblttng-ust[0-9] \
-        libstdc++6 zlib1g locales sudo ncdu man-db strace gnupg2 \
-        # install cpp packages
-        build-essential cmake clang lldb llvm gdb ninja-build cppcheck clang-format-14 clang-tidy-14 && \
-        # clean-up
-        apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* && \
-        # redirect format and tidy to the versioned variants
-        update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-14 100 && \
-        update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-14 100
+    apt-get install -y jq sudo curl wget git \
+    # install cpp packages
+    build-essential cmake clang lldb llvm gdb ninja-build cppcheck clang-format-14 clang-tidy-14 && \
+    # clean-up
+    apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* && \
+    # redirect format and tidy to the versioned variants
+    update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-14 100 && \
+    update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-14 100
 
 # Create non-root user
 ARG USERNAME=vscode
@@ -99,10 +86,8 @@ COPY ./common .
 ARG TARGETARCH
 RUN ./install-python.sh && \
     ./install-dapr-cli.sh && \
-    ./install-k3d-prerequisites.sh && \
     ./install-velocitas-cli.sh ${TARGETARCH}
 USER 4000
-RUN ./install-k3d-tooling.sh
 
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt ./requirements/requirements.txt
 
