@@ -20,7 +20,7 @@ Examples of behavior that contribute to creating a positive and professional env
 - Gracefully accepting constructive criticism;
 - Focusing on what is best for the community;
 - Showing empathy towards other community members;
-- Being direct but professional; and
+- Being direct but professional;
 - Leading by example by holding yourself and others accountable
 
 Examples of unacceptable behavior by Contributors include:
