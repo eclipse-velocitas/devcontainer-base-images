@@ -13,14 +13,17 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+CLI_INSTALL_VERSION='v0.5.0' # reference on particular release version
 echo "#######################################################"
-echo "### Install Velocitas CLI                           ###"
+echo "### Install Velocitas CLI ${CLI_INSTALL_VERSION}                    ###"
 echo "#######################################################"
 
 CLI_ASSET_NAME=velocitas-linux-$(echo $1 | sed 's/amd64/x64/g')
 CLI_INSTALL_PATH=/usr/bin/velocitas
 
-CLI_DOWNLOAD_URL="https://github.com/eclipse-velocitas/cli/releases/latest/download/${CLI_ASSET_NAME}"
+CLI_DOWNLOAD_URL="https://github.com/eclipse-velocitas/cli/releases/download/${CLI_INSTALL_VERSION}/${CLI_ASSET_NAME}"
+
+echo "Downloading Velocitas CLI from ${CLI_DOWNLOAD_URL}"
 
 curl -L ${CLI_DOWNLOAD_URL} -o "${CLI_INSTALL_PATH}"
 chmod +x "${CLI_INSTALL_PATH}"
