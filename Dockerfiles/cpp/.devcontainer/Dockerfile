@@ -24,14 +24,14 @@ RUN apt-get update && apt-get upgrade -y && \
     gcc-x86-64-linux-gnu g++-x86-64-linux-gnu binutils-x86-64-linux-gnu && \
     apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/conanfile.py /container/cpp/
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/BjoernAtBosch-patch-1/conanfile.py /container/cpp/
 
 # Get all profiles from the SDK
-ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/.conan/profiles/linux_aarch64_release /container/cpp/.conan/profiles/
-ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/.conan/profiles/linux_x86_64_release  /container/cpp/.conan/profiles/
-ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/.scripts/common.sh                    /container/cpp/.scripts/
-ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/install_dependencies.sh               /container/cpp/
-ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt                      /container/cpp/
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/BjoernAtBosch-patch-1/.conan/profiles/linux_aarch64_release /container/cpp/.conan/profiles/
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/BjoernAtBosch-patch-1/.conan/profiles/linux_x86_64_release  /container/cpp/.conan/profiles/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/BjoernAtBosch-patch-1/.scripts/common.sh                    /container/cpp/.scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/BjoernAtBosch-patch-1/install_dependencies.sh               /container/cpp/
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/BjoernAtBosch-patch-1/requirements.txt                      /container/cpp/
 
 COPY ./common /scripts
 
@@ -89,7 +89,7 @@ RUN ./install-python.sh && \
     ./install-velocitas-cli.sh ${TARGETARCH}
 USER 4000
 
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/main/requirements.txt ./requirements/requirements.txt
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/BjoernAtBosch-patch-1/requirements.txt ./requirements/requirements.txt
 
 # Install Python requirements as vscode user and clean up
 RUN pip3 install -r ./requirements/requirements.txt && \
