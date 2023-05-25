@@ -7,13 +7,13 @@ This is the repository for the base-images of the devcontainers for Vehicle App 
 [![License: Apache](https://img.shields.io/badge/License-Apache-yellow.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 ## Documentation
-* [Velocitas Development Model](https://websites.eclipseprojects.io/velocitas/docs/about/development_model/)
-* [Vehicle App SDK Overview](https://websites.eclipseprojects.io/velocitas/docs/about/development_model/vehicle_app_sdk/)
+* [Velocitas Development Model](https://eclipse.dev/velocitas/docs/concepts/development_model/)
+* [Vehicle App SDK Overview](https://eclipse.dev/velocitas/docs/concepts/development_model/vehicle_app_sdk/)
 
 ## Quickstart Tutorials
-1. [Setup and Explore Development Enviroment](https://websites.eclipseprojects.io/velocitas-docs/docs/tutorials/quickstart/)
-1. [Develop your own Vehicle Model](https://websites.eclipseprojects.io/velocitas/docs/tutorials/tutorial_how_to_create_a_vehicle_model/)
-1. [Develop your own Vehicle App](https://websites.eclipseprojects.io/velocitas/docs/tutorials/vehicle-app-development/)
+1. [Setup and Explore Development Enviroment](https://eclipse.dev/velocitas/docs/tutorials/quickstart/)
+1. [Develop your own Vehicle Model](https://eclipse.dev/velocitas/docs/tutorials/vehicle_model_creation/)
+1. [Develop your own Vehicle App](https://eclipse.dev/velocitas/docs/tutorials/vehicle-app-development/)
 
 ## Contribution
 - [GitHub Issues](https://github.com/eclipse-velocitas/devcontainer-base-images/issues)
