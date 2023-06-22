@@ -86,7 +86,9 @@ COPY ./common .
 ARG TARGETARCH
 RUN ./install-python.sh && \
     ./install-dapr-cli.sh && \
-    ./install-velocitas-cli.sh ${TARGETARCH}
+    ./install-velocitas-cli.sh ${TARGETARCH} && \
+    ./install-kanto.sh ${TARGETARCH}
+
 USER 4000
 
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/v0.3.2/requirements.txt ./requirements/requirements.txt
