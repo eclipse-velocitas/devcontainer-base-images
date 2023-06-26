@@ -31,10 +31,10 @@ WORKDIR /tmp/setup
 COPY ./common .
 
 ARG TARGETARCH
-RUN ./install-kanto.sh ${TARGETARCH} && \
+RUN ./install-python.sh && \
     ./install-dapr-cli.sh && \
     ./install-velocitas-cli.sh ${TARGETARCH} && \
-    ./install-python.sh
+    ./install-kanto.sh ${TARGETARCH}
 
 USER 4000
 
