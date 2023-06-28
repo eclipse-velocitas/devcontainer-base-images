@@ -33,7 +33,9 @@ COPY ./common .
 ARG TARGETARCH
 RUN ./install-python.sh && \
     ./install-dapr-cli.sh && \
-    ./install-velocitas-cli.sh ${TARGETARCH}
+    ./install-velocitas-cli.sh ${TARGETARCH} && \
+    ./install-kanto.sh ${TARGETARCH}
+
 USER 4000
 
 # Fetch requirements into requirements folder

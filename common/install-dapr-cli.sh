@@ -12,7 +12,7 @@
 # under the License.
 #
 # SPDX-License-Identifier: Apache-2.0
-
+set -e
 echo "#######################################################"
 echo "### Install dapr-cli                                ###"
 echo "#######################################################"
