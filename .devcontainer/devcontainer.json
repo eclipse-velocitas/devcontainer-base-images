@@ -10,9 +10,6 @@
 		"--init",
 		"--privileged"
 	],
-	"containerEnv": {
-		"GITHUB_API_TOKEN": "${localEnv:GITHUB_API_TOKEN}"
-	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
