@@ -19,8 +19,7 @@
 
 	"features": {
 		"ghcr.io/devcontainers/features/common-utils:2": {},
-		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
-		"ghcr.io/devcontainers-contrib/features/pre-commit:2": {}
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
 	},
 
 	// Configure tool-specific properties.
@@ -29,7 +28,7 @@
 		"vscode": {
 			// Set *default* container specific settings.json values on container create.
 			"settings": {
-				"terminal.integrated.defaultProfile.linux": "bash"
+				"terminal.integrated.defaultProfile.linux": "zsh"
 			},
 			"extensions": [
 				"ms-azuretools.vscode-docker"
