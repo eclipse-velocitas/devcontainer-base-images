@@ -17,7 +17,7 @@ name: Release
 on:
   push:
     tags:
-      - '*'
+      - 'v[0-9]+\.[0-9]+\.[0-9]+'
 
   workflow_dispatch:
 
@@ -62,10 +62,26 @@ jobs:
         with:
           install: true
 
+      - name: Get version from tag
+        id: getVersions
+        run: |
+          semantic_version=$(sed -e "s/^v//" <<< ${{ github.ref_name }})
+          major_version=$(cut -d '.' -f 1 <<< "$semantic_version")
+          major_minor_version=$(cut -d '.' -f 1,2 <<< "$semantic_version")
+          echo "semantic_version=v$semantic_version" >> $GITHUB_OUTPUT
+          echo "major_version=v$major_version" >> $GITHUB_OUTPUT
+          echo "major_minor_version=v$major_minor_version" >> $GITHUB_OUTPUT
+
       - name: Tag docker images
         run: |
           FQ_IMAGE_NAME=ghcr.io/${{ steps.github-repository-name-case-adjusted.outputs.lowercase }}/${{ matrix.language }}
-          NEW_TAG=${{ github.ref_name }}
           OLD_TAG=${{ github.sha }}
+          V_XXX=${{ steps.getVersions.outputs.semantic_version }}
+          V_X=${{ steps.getVersions.outputs.major_version }}
+          V_XX=${{ steps.getVersions.outputs.major_minor_version }}
 
-          docker buildx imagetools create -t $FQ_IMAGE_NAME:$NEW_TAG $FQ_IMAGE_NAME:$OLD_TAG
+          if [[ $V_X != "v0" ]] ; then
+            docker buildx imagetools create -t $FQ_IMAGE_NAME:$V_X $FQ_IMAGE_NAME:$OLD_TAG
+          fi
+
+          docker buildx imagetools create -t $FQ_IMAGE_NAME:$V_XX -t $FQ_IMAGE_NAME:$V_XXX $FQ_IMAGE_NAME:$OLD_TAG
