@@ -80,8 +80,11 @@ jobs:
           V_X=${{ steps.getVersions.outputs.major_version }}
           V_XX=${{ steps.getVersions.outputs.major_minor_version }}
 
-          if [[ $V_X != "v0" ]] ; then
-            docker buildx imagetools create -t $FQ_IMAGE_NAME:$V_X $FQ_IMAGE_NAME:$OLD_TAG
+          if [[ $V_XX != "v0.0" ]] ; then
+              docker buildx imagetools create -t $FQ_IMAGE_NAME:$V_XX $FQ_IMAGE_NAME:$OLD_TAG
+              if [[ $V_X != "v0" ]] ; then
+                  docker buildx imagetools create -t $FQ_IMAGE_NAME:$V_X $FQ_IMAGE_NAME:$OLD_TAG
+              fi
           fi
 
-          docker buildx imagetools create -t $FQ_IMAGE_NAME:$V_XX -t $FQ_IMAGE_NAME:$V_XXX $FQ_IMAGE_NAME:$OLD_TAG
+          docker buildx imagetools create -t $FQ_IMAGE_NAME:$V_XXX $FQ_IMAGE_NAME:$OLD_TAG
