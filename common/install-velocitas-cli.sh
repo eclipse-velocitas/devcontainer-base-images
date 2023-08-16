@@ -13,7 +13,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 set -e
-CLI_INSTALL_VERSION='v0.5.1' # reference on particular release version
+CLI_INSTALL_VERSION='v0.5.4' # reference a particular released version
 echo "#######################################################"
 echo "### Install Velocitas CLI ${CLI_INSTALL_VERSION}                    ###"
 echo "#######################################################"
