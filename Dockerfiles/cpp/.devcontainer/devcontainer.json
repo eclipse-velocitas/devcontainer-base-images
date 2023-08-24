@@ -5,18 +5,18 @@
         "context": "../../.."
     },
     "features": {
-        "ghcr.io/devcontainers/features/git:1": {
+        "ghcr.io/devcontainers/features/git:1.1.5": {
             "ppa": true,
-            "version": "latest"
+            "version": "2.41.0"
         },
-        "ghcr.io/devcontainers/features/common-utils:2": {},
-        "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-        "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-            "version": "latest",
-            "helm": "latest",
+        "ghcr.io/devcontainers/features/common-utils:2.1.1": {},
+        "ghcr.io/devcontainers/features/docker-in-docker:2.2.1": {},
+        "ghcr.io/devcontainers/features/kubectl-helm-minikube:1.1.4": {
+            "version": "1.28.0",
+            "helm": "3.12.3",
             "minikube": "none"
         },
-        "ghcr.io/rio/features/k3d:1": {},
-        "ghcr.io/rio/features/k9s:1": {}
+        "ghcr.io/rio/features/k3d:1.1.0": {},
+        "ghcr.io/rio/features/k9s:1.1.2": {}
     }
 }
