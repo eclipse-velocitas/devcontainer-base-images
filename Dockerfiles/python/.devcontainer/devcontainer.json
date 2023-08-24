@@ -12,7 +12,7 @@
         "ghcr.io/devcontainers/features/common-utils:2.1.1": {},
         "ghcr.io/devcontainers/features/docker-in-docker:2.2.1": {},
         "ghcr.io/devcontainers/features/kubectl-helm-minikube:1.1.4": {
-            "version": "v1.28.0",
+            "version": "1.28.0",
             "helm": "v3.12.3",
             "minikube": "none"
         },
