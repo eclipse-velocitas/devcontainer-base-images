@@ -94,8 +94,8 @@ USER 4000
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/v0.3.2/requirements.txt ./requirements/requirements.txt
 
 # Install Python requirements as vscode user and clean up
-RUN pip3 install -r ./requirements/requirements.txt && \
-    pip3 install -r ./requirements.txt
+RUN sudo pip3 install -r ./requirements/requirements.txt && \
+    sudo pip3 install -r ./requirements.txt
 
 # We need to set the USER back to root at the end, otherwise we get errors when using this in our repo.
 USER root
