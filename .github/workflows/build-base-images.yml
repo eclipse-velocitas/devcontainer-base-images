@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        language: [python, cpp]
+        images: [python, cpp, app-template]
 
     steps:
       - name: Checkout repository
@@ -82,12 +82,12 @@ jobs:
         id: image_build
         uses: devcontainers/ci@v0.3
         with:
-          imageName: ghcr.io/${{ steps.github-repository-name-case-adjusted.outputs.lowercase }}/${{ matrix.language }}
+          imageName: ghcr.io/${{ steps.github-repository-name-case-adjusted.outputs.lowercase }}/${{ matrix.images }}
           imageTag: ${{ steps.get-tag.outputs.tags }}
           push: always
           platform: linux/amd64,linux/arm64
           noCache: true
-          subFolder: ./Dockerfiles/${{ matrix.language }}/
+          subFolder: ./Dockerfiles/${{ matrix.images }}/
 
   generate-sbom:
     name: Generate SBOM

@@ -41,7 +41,7 @@ jobs:
     needs: [wait-for-images]
     strategy:
       matrix:
-        language: [python, cpp]
+        images: [python, cpp, app-template]
 
     steps:
       - name: Login to GitHub Container Registry
@@ -74,7 +74,7 @@ jobs:
 
       - name: Tag docker images
         run: |
-          FQ_IMAGE_NAME=ghcr.io/${{ steps.github-repository-name-case-adjusted.outputs.lowercase }}/${{ matrix.language }}
+          FQ_IMAGE_NAME=ghcr.io/${{ steps.github-repository-name-case-adjusted.outputs.lowercase }}/${{ matrix.images }}
           OLD_TAG=${{ github.sha }}
           V_XXX=${{ steps.getVersions.outputs.semantic_version }}
           V_X=${{ steps.getVersions.outputs.major_version }}
