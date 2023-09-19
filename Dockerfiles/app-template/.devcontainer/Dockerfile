@@ -27,7 +27,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
-WORKDIR /
+WORKDIR /home/vscode
 COPY .devcontainer/scripts/configure-proxies.sh .
 WORKDIR /tmp/setup
 COPY ./common .
