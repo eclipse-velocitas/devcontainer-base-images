@@ -1,0 +1,15 @@
+{
+    "name": "Base Container",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": "../../.."
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/git:1.1.5": {
+            "ppa": true,
+            "version": "2.41.0"
+        },
+        "ghcr.io/devcontainers/features/common-utils:2.1.1": {},
+        "ghcr.io/devcontainers/features/docker-in-docker:2.2.1": {}
+    }
+}
