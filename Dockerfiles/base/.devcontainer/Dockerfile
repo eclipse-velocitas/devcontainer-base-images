@@ -34,7 +34,7 @@ COPY ./common .
 
 ARG TARGETARCH
 RUN ./install-python.sh && \
-    ./install-velocitas-cli.sh ${TARGETARCH} &&
+    ./install-velocitas-cli.sh ${TARGETARCH}
 
 # Keep root as last user
 USER root
