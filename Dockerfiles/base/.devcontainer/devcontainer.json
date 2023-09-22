@@ -1,5 +1,5 @@
 {
-    "name": "Base Container",
+    "name": "Vehicle App Base Container",
     "build": {
         "dockerfile": "Dockerfile",
         "context": "../../.."
