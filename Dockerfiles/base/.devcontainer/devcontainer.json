@@ -1,0 +1,7 @@
+{
+    "name": "Vehicle App Base Container",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": "../../.."
+    }
+}
