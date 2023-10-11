@@ -5,10 +5,6 @@
         "context": "../../.."
     },
     "features": {
-        "ghcr.io/devcontainers/features/common-utils:2.1.2": {},
-        "ghcr.io/devcontainers/features/git:1.1.5": {
-            "ppa": true,
-            "version": "2.41.0"
-        }
+        "ghcr.io/devcontainers/features/common-utils:2.1.2": {}
     }
 }
