@@ -34,7 +34,7 @@ echo "All proxy: $ALL_PROXY"
 echo "No proxy: $NO_PROXY"
 echo "Configure git: $CONFIGURE_GIT"
 
-set -ex
+set -e
 
 if [ "$(id -u)" -ne 0 ]; then
     echo -e 'Script must be run as root. Use sudo, su, or add "USER root" to your Dockerfile before running this script.'
