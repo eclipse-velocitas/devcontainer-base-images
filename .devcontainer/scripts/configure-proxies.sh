@@ -85,6 +85,7 @@ if [ "${USE_PROXIES}" = "true" ]; then
         git config --global https.proxy ${HTTPS_PROXY}
     fi
 
+    # Apply wget proxy
     echo "# Proxy settings" >> /etc/wgetrc
     echo "http_proxy=${HTTP_PROXY}" >> /etc/wgetrc
     echo "https_proxy=${HTTPS_PROXY}" >> /etc/wgetrc
@@ -95,6 +96,21 @@ if [ "${USE_PROXIES}" = "true" ]; then
     # enable root user to "apt-get" via proxy
     echo "Acquire::http::proxy \"${HTTP_PROXY}\";" >> /etc/apt/apt.conf
     echo "Acquire::https::proxy \"${HTTPS_PROXY}\";" >> /etc/apt/apt.conf
+
+    # apply proxy for docker config
+    DOCKER_CONFIG_INITIAL_CONTENT="{}"
+    mkdir -p /home/${USERNAME}/.docker
+    CONFIG_FILE=/home/$USERNAME/.docker/config.json
+    echo $CONFIG_FILE
+    if [ -s "${CONFIG_FILE}" ]; then
+        echo "File exist"
+        DOCKER_CONFIG_INITIAL_CONTENT=$(cat "${CONFIG_FILE}")
+    fi
+
+    DOCKER_PROXY_JSON="{\"default\": {\"httpProxy\": \"$HTTP_PROXY\", \"httpsProxy\": \"$HTTP_PROXY\", \"noProxy\": \"$NO_PROXY\"}}"
+    echo $DOCKER_PROXY_JSON
+
+    echo $DOCKER_CONFIG_INITIAL_CONTENT | jq --argjson proxy "$DOCKER_PROXY_JSON" '. + {proxies: $proxy}' >| $CONFIG_FILE
 fi
 
 exit 0
