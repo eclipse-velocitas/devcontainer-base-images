@@ -99,18 +99,18 @@ if [ "${USE_PROXIES}" = "true" ]; then
 
     # apply proxy for docker config
     DOCKER_CONFIG_INITIAL_CONTENT="{}"
-    mkdir -p /home/${USERNAME}/.docker
-    CONFIG_FILE=/home/$USERNAME/.docker/config.json
-    echo $CONFIG_FILE
-    if [ -s "${CONFIG_FILE}" ]; then
-        echo "File exist"
-        DOCKER_CONFIG_INITIAL_CONTENT=$(cat "${CONFIG_FILE}")
+    DOCKER_CONFIG_FOLDER=/home/${USERNAME}/.docker
+    mkdir -p $DOCKER_CONFIG_FOLDER
+    DOCKER_CONFIG_FILE=${DOCKER_CONFIG_FOLDER}/config.json
+    echo $DOCKER_CONFIG_FILE
+    if [ -s "${DOCKER_CONFIG_FILE}" ]; then
+        echo "Existing docker config file found!"
+        DOCKER_CONFIG_INITIAL_CONTENT=$(cat "${DOCKER_CONFIG_FILE}")
     fi
 
     DOCKER_PROXY_JSON="{\"default\": {\"httpProxy\": \"$HTTP_PROXY\", \"httpsProxy\": \"$HTTP_PROXY\", \"noProxy\": \"$NO_PROXY\"}}"
-    echo $DOCKER_PROXY_JSON
 
-    echo $DOCKER_CONFIG_INITIAL_CONTENT | jq --argjson proxy "$DOCKER_PROXY_JSON" '. + {proxies: $proxy}' >| $CONFIG_FILE
+    echo $DOCKER_CONFIG_INITIAL_CONTENT | jq --argjson proxy "$DOCKER_PROXY_JSON" '. + {proxies: $proxy}' >| $DOCKER_CONFIG_FILE
 fi
 
 exit 0
