@@ -102,7 +102,6 @@ if [ "${USE_PROXIES}" = "true" ]; then
     DOCKER_CONFIG_FOLDER=/home/${USERNAME}/.docker
     mkdir -p $DOCKER_CONFIG_FOLDER
     DOCKER_CONFIG_FILE=${DOCKER_CONFIG_FOLDER}/config.json
-    echo $DOCKER_CONFIG_FILE
     if [ -s "${DOCKER_CONFIG_FILE}" ]; then
         echo "Existing docker config file found!"
         DOCKER_CONFIG_INITIAL_CONTENT=$(cat "${DOCKER_CONFIG_FILE}")
