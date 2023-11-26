@@ -1,4 +1,4 @@
-## Declared Project Licenses
+Copyright (c) 2023 Contributors to the Eclipse Foundation
 
 This program and the accompanying materials are made available under the
 terms of the Apache License, Version 2.0 which is available at
@@ -11,12 +11,3 @@ License for the specific language governing permissions and limitations
 under the License.
 
 SPDX-License-Identifier: Apache-2.0
-
-## Contributors:
-* Robert Bosch GmbH
-* Microsoft Corporation
-
-## Third-party Content
-
-### Further 3rd party licenses used in project
-[Auto-generated 3rd party licenses](./NOTICE-3RD-PARTY-CONTENT.md)
