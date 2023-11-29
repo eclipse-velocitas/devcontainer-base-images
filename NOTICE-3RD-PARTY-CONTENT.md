@@ -1,4 +1,4 @@
- Licenses Notice
+# Licenses Notice
 *Note*: This file is auto-generated. Do not modify it manually.
 ## Workflows
 | Dependency | Version | License |
