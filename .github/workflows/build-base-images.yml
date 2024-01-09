@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023 Contributors to the Eclipse Foundation
+# Copyright (c) 2022-2024 Contributors to the Eclipse Foundation
 #
 # This program and the accompanying materials are made available under the
 # terms of the Apache License, Version 2.0 which is available at
@@ -113,7 +113,7 @@ jobs:
             do
               syft --platform $arch \
               -o template=SBOM/Markdown/$lang\_$arch.md -t templates/SBOM_md.tmpl \
-              -o spdx-json=SBOM/SPDX/$lang\_$arch.spdx.json \
+              -o spdx-json@2.2=SBOM/SPDX/$lang\_$arch.spdx.json \
               -o cyclonedx-json=SBOM/CycloneDX/$lang\_$arch.cyclonedx.json \
               ghcr.io/${{ github.repository }}/$lang:${{ needs.build-image.outputs.tag }}
             done
