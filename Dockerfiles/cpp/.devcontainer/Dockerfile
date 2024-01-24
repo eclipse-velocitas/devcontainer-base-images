@@ -18,7 +18,7 @@
 
 FROM --platform=$BUILDPLATFORM ubuntu:22.04 as builder
 
-ARG SDK_TAG=v0.4.1
+ARG SDK_TAG
 
 RUN echo $SDK_TAG > /container/cpp/version.txt
 
@@ -61,6 +61,8 @@ RUN conan remove --builds --src --force '*'
 ##############################################################################
 
 FROM --platform=$TARGETPLATFORM ubuntu:22.04 as final
+
+ARG SDK_TAG
 
 RUN apt-get --fix-missing update && apt-get upgrade -y && \
     apt-get install -y jq sudo curl wget git \
