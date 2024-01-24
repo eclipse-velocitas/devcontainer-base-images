@@ -18,20 +18,24 @@
 
 FROM --platform=$BUILDPLATFORM ubuntu:22.04 as builder
 
+ARG SDK_TAG=v0.4.1
+
+RUN echo $SDK_TAG > /container/cpp/version.txt
+
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y jq sudo curl wget git cmake build-essential \
     gcc-aarch64-linux-gnu g++-aarch64-linux-gnu binutils-aarch64-linux-gnu \
     gcc-x86-64-linux-gnu g++-x86-64-linux-gnu binutils-x86-64-linux-gnu && \
     apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/v0.4.1/conanfile.py /container/cpp/
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/conanfile.py /container/cpp/
 
 # Get all profiles from the SDK
-ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/v0.4.1/.conan/profiles/linux_aarch64_release /container/cpp/.conan/profiles/
-ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/v0.4.1/.conan/profiles/linux_x86_64_release  /container/cpp/.conan/profiles/
-ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/v0.4.1/.scripts/common.sh                    /container/cpp/.scripts/
-ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/v0.4.1/install_dependencies.sh               /container/cpp/
-ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/v0.4.1/requirements.txt                      /container/cpp/
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/.conan/profiles/linux_aarch64_release /container/cpp/.conan/profiles/
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/.conan/profiles/linux_x86_64_release  /container/cpp/.conan/profiles/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/.scripts/common.sh                    /container/cpp/.scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/install_dependencies.sh               /container/cpp/
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/requirements.txt                      /container/cpp/
 
 COPY ./common /scripts
 
@@ -91,7 +95,7 @@ RUN ./install-python.sh && \
 
 USER 4000
 
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/v0.4.1/requirements.txt ./requirements/requirements.txt
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/requirements.txt ./requirements/requirements.txt
 
 # Install Python requirements as vscode user and clean up
 RUN sudo pip3 install -r ./requirements/requirements.txt && \
