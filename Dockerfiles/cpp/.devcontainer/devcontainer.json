@@ -4,7 +4,7 @@
         "dockerfile": "Dockerfile",
         "context": "../../..",
         "args": {
-            "SDK_TAG": "v0.4.1"
+            "SDK_TAG": "fix/xcompile"
         }
     },
     "features": {
