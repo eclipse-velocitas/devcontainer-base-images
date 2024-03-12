@@ -75,6 +75,7 @@ ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app
 RUN sudo pip3 install -r ./requirements/requirements.txt && \
     sudo pip3 install -r ./requirements.txt
 
+WORKDIR /container/cpp/build
 WORKDIR /container/cpp/
 RUN bash ./install_dependencies.sh
 # We need to set the USER back to root at the end, otherwise we get errors when using this in our repo.
