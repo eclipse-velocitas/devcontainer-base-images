@@ -36,16 +36,6 @@ ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-
 ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/.conan/profiles/linux_x86_64_release  ./.conan/profiles/
 ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/.scripts/common.sh                    ./.scripts/
 ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/install_dependencies.sh               .
-ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/requirements.txt                      .
-
-COPY ./common /scripts
-
-WORKDIR /conan
-ENV CONAN_USER_HOME /conan
-
-# Install conan
-WORKDIR /scripts
-RUN ./install-python.sh && pip3 install -r /container/cpp/requirements.txt
 
 RUN apt-get --fix-missing update && apt-get upgrade -y && \
     apt-get install -y jq sudo curl wget git \
