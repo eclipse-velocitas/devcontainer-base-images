@@ -26,7 +26,7 @@ WORKDIR /container/cpp/
 RUN echo $SDK_TAG > version.txt
 
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y jq sudo curl wget git cmake build-essential \
+    apt-get install -y jq sudo curl wget git cmake build-essential && \
     apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/conanfile.py .
