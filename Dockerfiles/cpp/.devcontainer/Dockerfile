@@ -47,10 +47,6 @@ ENV CONAN_USER_HOME /conan
 WORKDIR /scripts
 RUN ./install-python.sh && pip3 install -r /container/cpp/requirements.txt
 
-# Build dependencies for target architecture
-WORKDIR /container/cpp/build
-WORKDIR /container/cpp
-
 RUN apt-get --fix-missing update && apt-get upgrade -y && \
     apt-get install -y jq sudo curl wget git \
     # install cpp packages
@@ -89,6 +85,7 @@ ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app
 RUN sudo pip3 install -r ./requirements/requirements.txt && \
     sudo pip3 install -r ./requirements.txt
 
+WORKDIR /container/cpp/
 RUN bash ./install_dependencies.sh
 # We need to set the USER back to root at the end, otherwise we get errors when using this in our repo.
 USER root
