@@ -16,9 +16,10 @@
 # Builder step (cross compile from BUILD to HOST, if needed)
 ##############################################################################
 
-FROM --platform=$BUILDPLATFORM ubuntu:22.04 as builder
+FROM ubuntu:22.04
 
 ARG SDK_TAG
+ARG TARGETARCH
 
 WORKDIR /container/cpp/
 
@@ -26,8 +27,6 @@ RUN echo $SDK_TAG > version.txt
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y jq sudo curl wget git cmake build-essential \
-    gcc-aarch64-linux-gnu g++-aarch64-linux-gnu binutils-aarch64-linux-gnu \
-    gcc-x86-64-linux-gnu g++-x86-64-linux-gnu binutils-x86-64-linux-gnu && \
     apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/conanfile.py .
@@ -51,20 +50,6 @@ RUN ./install-python.sh && pip3 install -r /container/cpp/requirements.txt
 # Build dependencies for target architecture
 WORKDIR /container/cpp/build
 WORKDIR /container/cpp
-ARG TARGETARCH
-RUN bash ./install_dependencies.sh -x $TARGETARCH
-
-# Remove build files for final image
-RUN conan remove --builds --src --force '*'
-
-
-##############################################################################
-# Final step (run on TARGET, QEMU if needed)
-##############################################################################
-
-FROM --platform=$TARGETPLATFORM ubuntu:22.04 as final
-
-ARG SDK_TAG
 
 RUN apt-get --fix-missing update && apt-get upgrade -y && \
     apt-get install -y jq sudo curl wget git \
@@ -91,7 +76,6 @@ RUN groupadd --gid $USER_GID $USERNAME \
 WORKDIR /tmp/setup
 COPY ./common .
 
-ARG TARGETARCH
 RUN ./install-python.sh && \
     ./install-dapr-cli.sh && \
     ./install-velocitas-cli.sh ${TARGETARCH} && \
@@ -105,12 +89,10 @@ ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app
 RUN sudo pip3 install -r ./requirements/requirements.txt && \
     sudo pip3 install -r ./requirements.txt
 
+RUN bash ./install_dependencies.sh
 # We need to set the USER back to root at the end, otherwise we get errors when using this in our repo.
 USER root
 WORKDIR /
 
 # Cleanup temporary files
 RUN rm -rf /tmp/setup
-
-# Obtain pre-build dependencies
-COPY --chown=4000 --from=builder /conan/.conan /home/vscode/.conan
