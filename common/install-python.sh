@@ -17,7 +17,7 @@ set -e
 echo "#######################################################"
 echo "### Installing python version 3                     ###"
 echo "#######################################################"
-PYTHON_VERSION=$(cat AppManifest.json | jq .[].dependencies.python.version | tr -d '"')
+PYTHON_VERSION='3.10'
 
 sudo apt-get update && apt-get install -y python3-distutils python$PYTHON_VERSION python3-dev
 curl -fsSL https://bootstrap.pypa.io/get-pip.py | sudo python$PYTHON_VERSION
