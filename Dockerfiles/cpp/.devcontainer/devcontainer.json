@@ -4,7 +4,7 @@
         "dockerfile": "Dockerfile",
         "context": "../../..",
         "args": {
-            "SDK_TAG": "v0.4.2"
+            "SDK_TAG": "v0.4.3"
         }
     },
     "features": {
@@ -13,13 +13,6 @@
             "version": "2.41.0"
         },
         "ghcr.io/devcontainers/features/common-utils:2.1.2": {},
-        "ghcr.io/devcontainers/features/docker-in-docker:2.5.0": {},
-        "ghcr.io/devcontainers/features/kubectl-helm-minikube:1.1.4": {
-            "version": "1.28.0",
-            "helm": "3.12.3",
-            "minikube": "none"
-        },
-        "ghcr.io/rio/features/k3d:1.1.0": {},
-        "ghcr.io/rio/features/k9s:1.1.5": {}
+        "ghcr.io/devcontainers/features/docker-in-docker:2.5.0": {}
     }
 }
