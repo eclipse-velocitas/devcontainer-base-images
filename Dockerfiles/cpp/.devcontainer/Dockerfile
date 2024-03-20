@@ -93,7 +93,6 @@ COPY ./common .
 
 ARG TARGETARCH
 RUN ./install-python.sh && \
-    ./install-dapr-cli.sh && \
     ./install-velocitas-cli.sh ${TARGETARCH} && \
     ./install-kanto.sh ${TARGETARCH}
 
