@@ -96,6 +96,9 @@ RUN ./install-python.sh && \
     ./install-velocitas-cli.sh ${TARGETARCH} && \
     ./install-kanto.sh ${TARGETARCH}
 
+# Install conan as root user
+RUN sudo pip3 install conan==1.63.0
+
 USER 4000
 
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/requirements.txt ./requirements/requirements.txt
