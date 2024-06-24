@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Wait for build-base-images workflow to succeed
-        uses: fountainhead/action-wait-for-check@v1.1.0
+        uses: fountainhead/action-wait-for-check@v1.2.0
         with:
           checkName: Building image (cpp)
           token: ${{ secrets.GITHUB_TOKEN }}
