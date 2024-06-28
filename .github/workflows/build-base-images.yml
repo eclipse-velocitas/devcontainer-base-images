@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Linters
-        uses: pre-commit/action@v3.0.0
+        uses: pre-commit/action@v3.0.1
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -54,22 +54,27 @@ jobs:
         with:
           version: v0.9.0
 
-      - name: Get image tag
-        id: get-tag
-        shell: bash
-        run: |
-          TAGS=${{ github.sha }}
-          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            TAGS="${TAGS},latest"
-          fi
-          echo "tag=${{ github.sha }}" >> $GITHUB_OUTPUT
-          echo "tags=${TAGS}" >> $GITHUB_OUTPUT
-
       - id: github-repository-name-case-adjusted
         name: Prepare repository name in lower case for docker upload.
         uses: ASzc/change-string-case-action@v6
         with:
           string: ${{ github.repository }}
+
+      - name: Decide on upload strategy
+        id: get-tag
+        shell: bash
+        run: |
+          if [[ ("${{ github.event_name }}" == "pull_request") ]] ; then
+            TAGS=${{ github.sha }}
+            IMAGE_NAME=ttl.sh/eclipse-velocitas/${{ steps.github-repository-name-case-adjusted.outputs.lowercase }}/${{ matrix.image }}
+            echo "push_ttl=true" >> $GITHUB_OUTPUT
+          else
+            TAGS="latest"
+            IMAGE_NAME=ghcr.io/${{ steps.github-repository-name-case-adjusted.outputs.lowercase }}/${{ matrix.image }}
+            echo "push_ttl=false" >> $GITHUB_OUTPUT
+          fi
+          echo "tags=${TAGS}" >> $GITHUB_OUTPUT
+          echo "image_name=${IMAGE_NAME}" >> $GITHUB_OUTPUT
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -82,12 +87,18 @@ jobs:
         id: image_build
         uses: devcontainers/ci@v0.3
         with:
-          imageName: ghcr.io/${{ steps.github-repository-name-case-adjusted.outputs.lowercase }}/${{ matrix.image }}
+          imageName: ${{ steps.get-tag.outputs.image_name }}
           imageTag: ${{ steps.get-tag.outputs.tags }}
           push: always
           platform: linux/amd64,linux/arm64
           noCache: true
           subFolder: ./Dockerfiles/${{ matrix.image }}/
+
+      - name: Posting ttl.sh message
+        if: steps.get-tag.outputs.push_ttl == 'true'
+        uses: eclipse-kuksa/kuksa-actions/post-container-location@4
+        with:
+          image: ${{ steps.get-tag.outputs.image_name }}:${{ steps.get-tag.outputs.tags }}
 
   generate-sbom:
     name: Generate SBOM

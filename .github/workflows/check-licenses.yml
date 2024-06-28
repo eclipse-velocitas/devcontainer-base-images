@@ -45,19 +45,27 @@ jobs:
           generate-dash: true
 
       - name: Setup Java JDK
-        uses: actions/setup-java@v3.13.0
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
       - name: Run dash
         shell: bash
-        continue-on-error: true
         env:
           GITLAB_TOKEN:
         run: |
           wget -O dash.jar "https://repo.eclipse.org/content/repositories/dash-licenses/org/eclipse/dash/org.eclipse.dash.licenses/1.0.2/org.eclipse.dash.licenses-1.0.2.jar"
-          java -jar dash.jar -project automotive.velocitas -review -token ${{ secrets.GITLAB_API_TOKEN }} -summary DEPENDENCIES clearlydefined.input 2> output.log
+          if [[ -n "${{ secrets.GITLAB_API_TOKEN }}" ]]; then
+            echo -e "Dash token available. Will create tickets when required. \n " >> $GITHUB_STEP_SUMMARY
+            java -jar dash.jar -project automotive.velocitas -review -token ${{ secrets.GITLAB_API_TOKEN }} -summary DEPENDENCIES clearlydefined.input > dash.out 2>&1 || true
+          else
+            echo -e "Dash token not available. Will perform checking only. \n " >> $GITHUB_STEP_SUMMARY
+            java -jar dash.jar -project automotive.velocitas -summary DEPENDENCIES clearlydefined.input > dash.out 2>&1 || true
+          fi
+          echo -e "Dash output: \n\`\`\` " >> $GITHUB_STEP_SUMMARY
+          cat dash.out >> $GITHUB_STEP_SUMMARY
+          echo -e "\n\`\`\`"
 
       - name: Upload dash input/output as artifacts
         uses: actions/upload-artifact@v4
