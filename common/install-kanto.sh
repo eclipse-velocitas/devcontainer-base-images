@@ -35,7 +35,7 @@ echo "#######################################################"
 echo "### Install KantUI ${KANTUI_VERSION}                      ###"
 echo "#######################################################"
 KANTUI_VERSION='0.0.3' # reference on particular release version
-KANTUI_HASH='00680'
+KANTUI_HASH='861'
 
 KANTUI_DOWNLOAD_URL=https://github.com/eclipse-leda/leda-utils/releases/download/v${KANTUI_VERSION}/eclipse-leda-kantui_${KANTUI_VERSION}.0.${KANTUI_HASH}_$1.deb
 
