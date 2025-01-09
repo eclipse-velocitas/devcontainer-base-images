@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2024 Contributors to the Eclipse Foundation
+# Copyright (c) 2022-2025 Contributors to the Eclipse Foundation
 #
 # This program and the accompanying materials are made available under the
 # terms of the Apache License, Version 2.0 which is available at
@@ -97,7 +97,7 @@ RUN ./install-python.sh && \
     ./install-kanto.sh ${TARGETARCH}
 
 # Install conan as root user
-RUN sudo pip3 install conan==1.63.0
+RUN sudo pip3 install conan==1.66.0
 
 USER 4000
 

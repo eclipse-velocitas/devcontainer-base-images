@@ -4,15 +4,15 @@
         "dockerfile": "Dockerfile",
         "context": "../../..",
         "args": {
-            "SDK_TAG": "v0.4.3"
+            "SDK_TAG": "v0.6.1"
         }
     },
     "features": {
-        "ghcr.io/devcontainers/features/git:1.1.5": {
+        "ghcr.io/devcontainers/features/git:1.3.2": {
             "ppa": true,
-            "version": "2.41.0"
+            "version": "2.47.0"
         },
-        "ghcr.io/devcontainers/features/common-utils:2.1.2": {},
-        "ghcr.io/devcontainers/features/docker-in-docker:2.5.0": {}
+        "ghcr.io/devcontainers/features/common-utils:2.5.2": {},
+        "ghcr.io/devcontainers/features/docker-in-docker:2.12.0": {}
     }
 }

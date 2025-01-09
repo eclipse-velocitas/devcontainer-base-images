@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2022-2024 Contributors to the Eclipse Foundation
+# Copyright (c) 2022-2025 Contributors to the Eclipse Foundation
 #
 # This program and the accompanying materials are made available under the
 # terms of the Apache License, Version 2.0 which is available at
@@ -13,7 +13,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 set -e
-CLI_INSTALL_VERSION='v0.12.0' # reference a particular released version
+CLI_INSTALL_VERSION='v0.13.1' # reference a particular released version
 echo "#######################################################"
 echo "### Install Velocitas CLI ${CLI_INSTALL_VERSION}                    ###"
 echo "#######################################################"

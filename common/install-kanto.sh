@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2022-2024 Contributors to the Eclipse Foundation
+# Copyright (c) 2022-2025 Contributors to the Eclipse Foundation
 #
 # This program and the accompanying materials are made available under the
 # terms of the Apache License, Version 2.0 which is available at
@@ -16,7 +16,7 @@ set -e
 echo "#######################################################"
 echo "### Install Kanto ${KANTO_VERSION}                        ###"
 echo "#######################################################"
-KANTO_VERSION='0.1.0-M3' # reference on particular release version
+KANTO_VERSION='1.0.0' # reference on particular release version
 
 ARCH=$(echo $1 | sed 's/amd64/x86_64/g')
 KANTO_DOWNLOAD_URL=https://github.com/eclipse-kanto/kanto/releases/download/v${KANTO_VERSION}/kanto_${KANTO_VERSION}_linux_${ARCH}.deb
@@ -34,8 +34,8 @@ sudo dpkg -i ./kanto_${KANTO_VERSION}_linux_${ARCH}.deb
 echo "#######################################################"
 echo "### Install KantUI ${KANTUI_VERSION}                      ###"
 echo "#######################################################"
-KANTUI_VERSION='0.0.2' # reference on particular release version
-KANTUI_HASH='00680'
+KANTUI_VERSION='0.0.3' # reference on particular release version
+KANTUI_HASH='861'
 
 KANTUI_DOWNLOAD_URL=https://github.com/eclipse-leda/leda-utils/releases/download/v${KANTUI_VERSION}/eclipse-leda-kantui_${KANTUI_VERSION}.0.${KANTUI_HASH}_$1.deb
 

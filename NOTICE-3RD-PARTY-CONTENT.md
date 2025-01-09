@@ -13,4 +13,4 @@
 |docker/setup-qemu-action|v3|Apache License 2.0|
 |EndBug/add-and-commit|v9|MIT License|
 |fountainhead/action-wait-for-check|v1.2.0|MIT License|
-|pre-commit/action|v3.0.0|MIT License|
+|pre-commit/action|v3.0.1|MIT License|
