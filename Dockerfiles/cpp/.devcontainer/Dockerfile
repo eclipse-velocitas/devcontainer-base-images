@@ -97,7 +97,7 @@ RUN ./install-python.sh && \
     ./install-kanto.sh ${TARGETARCH}
 
 # Install conan as root user
-RUN sudo pip3 install conan==1.65.0
+RUN sudo pip3 install conan==1.66.0
 
 USER 4000
 
