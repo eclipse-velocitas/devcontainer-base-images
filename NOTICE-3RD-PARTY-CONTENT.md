@@ -4,7 +4,7 @@
 | Dependency | Version | License |
 |:-----------|:-------:|--------:|
 |actions/checkout|v4|MIT License|
-|actions/setup-java|v3.13.0|MIT License|
+|actions/setup-java|v4|MIT License|
 |actions/upload-artifact|v4|MIT License|
 |ASzc/change-string-case-action|v6|ISC License|
 |devcontainers/ci|v0.3|MIT License|
