@@ -14,6 +14,11 @@
 
 FROM ubuntu:22.04
 
+RUN rm /var/lib/dpkg/info/libc-bin.*
+RUN apt-get clean
+RUN apt-get update
+RUN apt install libc-bin
+
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y jq sudo curl wget git
 

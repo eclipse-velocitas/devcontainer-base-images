@@ -24,6 +24,11 @@ WORKDIR /container/cpp/
 
 RUN echo $SDK_TAG > version.txt
 
+RUN rm /var/lib/dpkg/info/libc-bin.*
+RUN apt-get clean
+RUN apt-get update
+RUN apt install libc-bin
+
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y jq sudo curl wget git cmake build-essential \
     gcc-aarch64-linux-gnu g++-aarch64-linux-gnu binutils-aarch64-linux-gnu \
