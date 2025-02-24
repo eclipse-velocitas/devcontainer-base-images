@@ -43,6 +43,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Free up space
+        run: |
+          df -h /
+          sudo rm -rf \
+            /opt/google/chrome \
+            /opt/microsoft/msedge \
+            /opt/microsoft/powershell \
+            /opt/pipx \
+            /usr/lib/mono \
+            /usr/local/julia* \
+            /usr/local/lib/android \
+            /usr/local/share/chromium \
+            /usr/local/share/powershell \
+            /usr/share/dotnet \
+            /usr/share/swift
+          df -h /
+
       - name: Run Linters
         uses: pre-commit/action@v3.0.1
 
