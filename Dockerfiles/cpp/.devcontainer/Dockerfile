@@ -24,6 +24,7 @@ WORKDIR /container/cpp/
 
 RUN echo $SDK_TAG > version.txt
 
+
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y jq sudo curl wget git cmake build-essential \
     gcc-aarch64-linux-gnu g++-aarch64-linux-gnu binutils-aarch64-linux-gnu \
@@ -33,11 +34,11 @@ RUN apt-get update && apt-get upgrade -y && \
 ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/conanfile.py .
 
 # Get all profiles from the SDK
-ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/.conan/profiles/linux_aarch64_release ./.conan/profiles/
-ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/.conan/profiles/linux_x86_64_release  ./.conan/profiles/
-ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/.scripts/common.sh                    ./.scripts/
-ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/install_dependencies.sh               .
-ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/requirements.txt                      .
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/.conan/profiles/linux_x86_64   ./.conan/profiles/
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/.conan/profiles/linux_armv8    ./.conan/profiles/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/.scripts/common.sh             ./.scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/install_dependencies.sh        .
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/requirements.txt               .
 
 COPY ./common /scripts
 
@@ -97,7 +98,7 @@ RUN ./install-python.sh && \
     ./install-kanto.sh ${TARGETARCH}
 
 # Install conan as root user
-RUN sudo pip3 install conan==1.66.0
+RUN sudo pip3 install conan==2.12.2
 
 USER 4000
 
