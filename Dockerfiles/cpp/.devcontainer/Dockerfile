@@ -16,7 +16,7 @@
 # Builder step (cross compile from BUILD to HOST, if needed)
 ##############################################################################
 
-FROM --platform=$BUILDPLATFORM ubuntu:24.04 as builder
+FROM --platform=$BUILDPLATFORM ubuntu:22.04 as builder
 
 ARG SDK_TAG
 
@@ -62,7 +62,7 @@ RUN conan remove --builds --src --force '*'
 # Final step (run on TARGET, QEMU if needed)
 ##############################################################################
 
-FROM --platform=$TARGETPLATFORM ubuntu:24.04 as final
+FROM --platform=$TARGETPLATFORM ubuntu:22.04 as final
 
 ARG SDK_TAG
 

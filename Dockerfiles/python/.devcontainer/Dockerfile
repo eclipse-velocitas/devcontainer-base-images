@@ -12,7 +12,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-FROM ubuntu:24.04
+FROM ubuntu:22.04
 
 
 RUN apt-get update && apt-get upgrade -y && \
