@@ -16,7 +16,7 @@
 # Builder step (cross compile from BUILD to HOST, if needed)
 ##############################################################################
 
-FROM --platform=$BUILDPLATFORM ubuntu:22.04 as builder
+FROM --platform=$BUILDPLATFORM ubuntu:24.04 as builder
 
 ARG SDK_TAG
 
@@ -24,10 +24,6 @@ WORKDIR /container/cpp/
 
 RUN echo $SDK_TAG > version.txt
 
-RUN rm /var/lib/dpkg/info/libc-bin.*
-RUN apt-get clean
-RUN apt-get update
-RUN apt install libc-bin
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y jq sudo curl wget git cmake build-essential \
@@ -66,7 +62,7 @@ RUN conan remove --builds --src --force '*'
 # Final step (run on TARGET, QEMU if needed)
 ##############################################################################
 
-FROM --platform=$TARGETPLATFORM ubuntu:22.04 as final
+FROM --platform=$TARGETPLATFORM ubuntu:24.04 as final
 
 ARG SDK_TAG
 
