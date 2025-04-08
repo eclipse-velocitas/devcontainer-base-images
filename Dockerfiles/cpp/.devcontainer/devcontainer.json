@@ -4,7 +4,7 @@
         "dockerfile": "Dockerfile",
         "context": "../../..",
         "args": {
-            "SDK_TAG": "v0.6.1"
+            "SDK_TAG": "v0.6.3"
         }
     },
     "features": {
