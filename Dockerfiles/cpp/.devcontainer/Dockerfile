@@ -42,7 +42,7 @@ ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-
 COPY ./common /scripts
 
 WORKDIR /conan
-ENV CONAN_USER_HOME /conan
+ENV CONAN_HOME /conan/.conan2
 
 # Install conan
 WORKDIR /scripts
