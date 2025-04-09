@@ -55,7 +55,7 @@ ARG TARGETARCH
 RUN bash ./install_dependencies.sh -r -x $TARGETARCH
 
 # Remove build files for final image
-RUN conan remove --builds --src --force '*'
+# RUN conan remove --builds --src --force '*'
 
 
 ##############################################################################
