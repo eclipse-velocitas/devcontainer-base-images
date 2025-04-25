@@ -53,10 +53,7 @@ WORKDIR /container/cpp/build
 WORKDIR /container/cpp
 ARG TARGETARCH
 RUN bash ./install_dependencies.sh -r -x $TARGETARCH
-
-# Remove build files for final image
-# RUN conan remove --builds --src --force '*'
-
+RUN echo conan==$(conan --version|grep -oE "[0-9]+\.[0-9]+\.[0-9]+[^[:space:]]*") > /conan/conan_requirement.txt
 
 ##############################################################################
 # Final step (run on TARGET, QEMU if needed)
@@ -97,7 +94,9 @@ RUN ./install-python.sh && \
     ./install-kanto.sh ${TARGETARCH}
 
 # Install conan as root user
-RUN sudo pip3 install conan==2.15.0
+COPY --from=builder /conan/conan_requirement.txt conan_requirement.txt
+RUN sudo pip3 install -r conan_requirement.txt && \
+    rm conan_requirement.txt
 
 USER 4000
 
