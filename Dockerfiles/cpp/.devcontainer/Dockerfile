@@ -33,16 +33,16 @@ RUN apt-get update && apt-get upgrade -y && \
 ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/conanfile.py .
 
 # Get all profiles from the SDK
-ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/.conan/profiles/linux_aarch64_release ./.conan/profiles/
-ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/.conan/profiles/linux_x86_64_release  ./.conan/profiles/
-ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/.scripts/common.sh                    ./.scripts/
-ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/install_dependencies.sh               .
-ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/requirements.txt                      .
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/.conan/profiles/linux-aarch64 ./.conan/profiles/
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/.conan/profiles/linux-x86_64  ./.conan/profiles/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/.scripts/common.sh            ./.scripts/
+ADD --chmod=744 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/install_dependencies.sh       .
+ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-cpp-sdk/$SDK_TAG/requirements.txt              .
 
 COPY ./common /scripts
 
 WORKDIR /conan
-ENV CONAN_USER_HOME /conan
+ENV CONAN_HOME /conan/.conan2
 
 # Install conan
 WORKDIR /scripts
@@ -52,11 +52,8 @@ RUN ./install-python.sh && pip3 install -r /container/cpp/requirements.txt
 WORKDIR /container/cpp/build
 WORKDIR /container/cpp
 ARG TARGETARCH
-RUN bash ./install_dependencies.sh -x $TARGETARCH
-
-# Remove build files for final image
-RUN conan remove --builds --src --force '*'
-
+RUN bash ./install_dependencies.sh -r -x $TARGETARCH
+RUN echo conan==$(conan --version|grep -oE "[0-9]+\.[0-9]+\.[0-9]+[^[:space:]]*") > /conan/conan_requirement.txt
 
 ##############################################################################
 # Final step (run on TARGET, QEMU if needed)
@@ -97,7 +94,9 @@ RUN ./install-python.sh && \
     ./install-kanto.sh ${TARGETARCH}
 
 # Install conan as root user
-RUN sudo pip3 install conan==1.66.0
+COPY --from=builder /conan/conan_requirement.txt conan_requirement.txt
+RUN sudo pip3 install -r conan_requirement.txt && \
+    rm conan_requirement.txt
 
 USER 4000
 
@@ -115,4 +114,4 @@ WORKDIR /
 RUN rm -rf /tmp/setup
 
 # Obtain pre-build dependencies
-COPY --chown=4000 --from=builder /conan/.conan /home/vscode/.conan
+COPY --chown=4000 --from=builder /conan/.conan2 /home/vscode/.conan2
