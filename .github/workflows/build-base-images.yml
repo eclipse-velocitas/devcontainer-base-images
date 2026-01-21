@@ -64,6 +64,11 @@ jobs:
           fi
           echo "tag=${{ github.sha }}" >> $GITHUB_OUTPUT
           echo "tags=${TAGS}" >> $GITHUB_OUTPUT
+          if [[ ("${{ github.event_name }}" == "pull_request") ]] ; then
+            echo "ci_push=never" >> $GITHUB_OUTPUT
+          else
+            echo "ci_push=always" >> $GITHUB_OUTPUT
+          fi
 
       - id: github-repository-name-case-adjusted
         name: Prepare repository name in lower case for docker upload.
@@ -84,7 +89,7 @@ jobs:
         with:
           imageName: ghcr.io/${{ steps.github-repository-name-case-adjusted.outputs.lowercase }}/${{ matrix.image }}
           imageTag: ${{ steps.get-tag.outputs.tags }}
-          push: always
+          push: ${{ steps.get-tag.outputs.ci_push }}
           platform: linux/amd64,linux/arm64
           noCache: true
           subFolder: ./Dockerfiles/${{ matrix.image }}/
