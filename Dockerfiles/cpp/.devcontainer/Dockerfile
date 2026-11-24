@@ -46,7 +46,7 @@ ENV CONAN_HOME=/conan/.conan2
 
 # Install conan
 WORKDIR /scripts
-RUN ./install-python.sh && pip3 install -r /container/cpp/requirements.txt
+RUN ./install-python.sh && pip3 install -r /container/cpp/requirements.txt --break-system-packages
 
 # Build dependencies for target architecture
 WORKDIR /container/cpp/build

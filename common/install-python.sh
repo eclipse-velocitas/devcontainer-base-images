@@ -18,7 +18,7 @@ echo "#######################################################"
 echo "### Installing python version 3                     ###"
 echo "#######################################################"
 
-sudo apt-get update && apt-get install -y python3 python3-pip python3-venv python3-setuptools python3-dev
-python3 -m pip install --upgrade pip
-
+sudo apt-get update && apt install -y python3 python3-pip python3-venv python3-setuptools python3-dev pipx
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+pipx ensurepath
+pipx install pip-tools
