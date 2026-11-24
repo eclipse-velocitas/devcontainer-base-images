@@ -19,8 +19,8 @@ echo "### Installing python version 3                     ###"
 echo "#######################################################"
 PYTHON_VERSION='3.14'
 
-sudo apt-get update && apt-get install -y python3-distutils python$PYTHON_VERSION python$PYTHON_VERSION-venv python3-dev
-curl -fsSL https://bootstrap.pypa.io/get-pip.py | sudo python$PYTHON_VERSION
+sudo apt-get update && apt-get install -y python$PYTHON_VERSION python$PYTHON_VERSION-venv python3-pip python3-setuptools python3-dev
+python3 -m pip install --upgrade pip
 
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python$PYTHON_VERSION 10
 sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python$PYTHON_VERSION 10
