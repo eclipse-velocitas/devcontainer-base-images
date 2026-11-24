@@ -16,7 +16,7 @@
 # Builder step (cross compile from BUILD to HOST, if needed)
 ##############################################################################
 
-FROM --platform=$BUILDPLATFORM ubuntu:22.04 as builder
+FROM --platform=$BUILDPLATFORM ubuntu:26.04 as builder
 
 ARG SDK_TAG
 
@@ -59,7 +59,7 @@ RUN echo conan==$(conan --version|grep -oE "[0-9]+\.[0-9]+\.[0-9]+[^[:space:]]*"
 # Final step (run on TARGET, QEMU if needed)
 ##############################################################################
 
-FROM --platform=$TARGETPLATFORM ubuntu:22.04 as final
+FROM --platform=$TARGETPLATFORM ubuntu:26.04 as final
 
 ARG SDK_TAG
 
@@ -72,6 +72,9 @@ RUN apt-get --fix-missing update && apt-get upgrade -y && \
     # redirect format and tidy to the versioned variants
     update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-14 100 && \
     update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-14 100
+
+# Free up UID/GID 1000 before creating your devcontainer user
+RUN userdel -r ubuntu
 
 # Create non-root user
 ARG USERNAME=vscode

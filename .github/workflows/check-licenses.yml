@@ -27,13 +27,13 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Clone License Check Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: eclipse-velocitas/license-check
-          ref: v1.2
+          ref: update_python
           path: .github/actions/license-check
 
       - name: Run License Checker
@@ -45,10 +45,10 @@ jobs:
           generate-dash: true
 
       - name: Setup Java JDK
-        uses: actions/setup-java@v3.13.0
+        uses: actions/setup-java@v6.3.0
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '25'
 
       - name: Run dash
         shell: bash
@@ -60,7 +60,7 @@ jobs:
           java -jar dash.jar -project automotive.velocitas -review -token ${{ secrets.GITLAB_API_TOKEN }} -summary DEPENDENCIES clearlydefined.input 2> output.log
 
       - name: Upload dash input/output as artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: "dash-artifacts"

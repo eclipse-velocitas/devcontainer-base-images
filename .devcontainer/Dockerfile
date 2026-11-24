@@ -12,10 +12,13 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-FROM ubuntu:22.04
+FROM ubuntu:26.04
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y jq sudo curl wget git pre-commit
+
+# Free up UID/GID 1000 before creating your devcontainer user
+RUN userdel -r ubuntu
 
 # Create non-root user
 ARG USERNAME=vscode
