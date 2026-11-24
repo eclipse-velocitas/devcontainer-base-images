@@ -41,15 +41,18 @@ RUN ./install-python.sh && \
 USER 4000
 
 # Fetch requirements into requirements folder
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/requirements.txt ./requirements/dev/requirements.txt
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/requirements.in ./requirements/dev/requirements.in
 ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements-links.txt ./requirements/app/requirements-links.txt
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements.txt ./requirements/app/requirements.txt
-ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/tests/requirements.txt ./requirements/tests/requirements.txt
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/requirements.in ./requirements/app/requirements.in
+ADD --chown=4000 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-python-template/main/app/tests/requirements.in ./requirements/tests/requirements.in
 
 # Always install requirements under vscode user to avoid issue with installation of packages
-RUN pip3 install -r ./requirements/dev/requirements.txt && \
+RUN pip-compile ./requirements/dev/requirements.in && \
+    pip3 install -r ./requirements/dev/requirements.txt && \
     pip3 install -r ./requirements/app/requirements-links.txt && \
+    pip-compile ./requirements/app/requirements.in && \
     pip3 install -r ./requirements/app/requirements.txt && \
+    pip-compile ./requirements/tests/requirements.in && \
     pip3 install -r ./requirements/tests/requirements.txt && \
     pip3 install -r ./requirements.txt
 
