@@ -16,7 +16,7 @@
 # Builder step (cross compile from BUILD to HOST, if needed)
 ##############################################################################
 
-FROM --platform=$BUILDPLATFORM ubuntu:26.04 as builder
+FROM --platform=$BUILDPLATFORM ubuntu:26.04 AS builder
 
 ARG SDK_TAG
 
@@ -42,7 +42,7 @@ ADD --chmod=444 https://raw.githubusercontent.com/eclipse-velocitas/vehicle-app-
 COPY ./common /scripts
 
 WORKDIR /conan
-ENV CONAN_HOME /conan/.conan2
+ENV CONAN_HOME=/conan/.conan2
 
 # Install conan
 WORKDIR /scripts
@@ -59,19 +59,19 @@ RUN echo conan==$(conan --version|grep -oE "[0-9]+\.[0-9]+\.[0-9]+[^[:space:]]*"
 # Final step (run on TARGET, QEMU if needed)
 ##############################################################################
 
-FROM --platform=$TARGETPLATFORM ubuntu:26.04 as final
+FROM ubuntu:26.04 AS final
 
 ARG SDK_TAG
 
 RUN apt-get --fix-missing update && apt-get upgrade -y && \
     apt-get install -y jq sudo curl wget git \
     # install cpp packages
-    build-essential cmake clang lldb llvm gdb ninja-build cppcheck clang-format-14 clang-tidy-14 && \
+    build-essential cmake clang lldb llvm gdb ninja-build cppcheck clang-format-21 clang-tidy-21 && \
     # clean-up
     apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* && \
     # redirect format and tidy to the versioned variants
-    update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-14 100 && \
-    update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-14 100
+    update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-21 100 && \
+    update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-21 100
 
 # Free up UID/GID 1000 before creating your devcontainer user
 RUN userdel -r ubuntu
