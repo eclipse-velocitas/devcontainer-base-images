@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Contributors to the Eclipse Foundation
+# Copyright (c) 2023-2026 Contributors to the Eclipse Foundation
 #
 # This program and the accompanying materials are made available under the
 # terms of the Apache License, Version 2.0 which is available at
@@ -12,10 +12,13 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-FROM ubuntu:22.04
+FROM ubuntu:26.04
 
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y jq sudo curl wget git
+
+# Free up UID/GID 1000 before creating your devcontainer user
+RUN userdel -r ubuntu
 
 # Create non-root user
 ARG USERNAME=vscode
